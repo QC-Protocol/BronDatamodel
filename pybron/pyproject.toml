@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=65", "wheel", "setuptools_scm>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+write_to = "<package>/_version.py"
+
+[project]
+name = "<package>"
+version = "0.0.1"
+dependencies = [
+    "click"
+]
+
+[tool.setuptools.packages.find]
+include = ["<package>"]
+
+[project.scripts]
+main = "<package>.main:main"
+
+[project.optional-dependencies]
+dev = ["black", "flake8", "pre-commit", "pytest", "pytest-order", "build", "tox"]
+
+[tool.bandit]
+exclude_dirs = ["dist", "doc"]
+
+[tool.bandit.assert_used]
+skips = ['*_test.py', '*/test_*.py']
+
+[tool.black]
+line-length = 88
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+isolated_build = true
+envlist = py311
+
+[testenv]
+deps = pytest > 4
+commands = pytest
+"""
+
+[tool.isort] # https://github.com/timothycrosley/isort/wiki/isort-Settings#full-reference-of-isort-settings
+# https://github.com/PyCQA/isort/wiki/isort-Settings
+profile = "black"
+
+[tool.coverage.run]
+omit = [
+  "env/*",
+]
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+ignore_errors = true
+
+[tool.pytest.ini_options]
+testpaths = [
+]

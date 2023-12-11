@@ -1,19 +1,23 @@
-Samenvatting: Van startende collega's (al dan niet ervaren) wordt verwacht dat ze:
-•	Werken met Visual Studio Code
-o	Visual Studio Code is hier te downloaden: https://code.visualstudio.com/
-o	Installatie User based uitvoeren (niet program files want veel collega's hebben geen BOW).
-o	Python downloaden van python.org en installeren als gebruiker.
-o	In VSC Python (en andere) addon(s) installeren. Als een (basis) project wordt geopend met een .vscode/extensions.json worden die extensions bijna automatisch geïnstalleerd.
+Samenvatting
+------------
+
+Van startende collega's (al dan niet ervaren) wordt verwacht dat ze:
+- Werken met Visual Studio Code
+- Visual Studio Code is hier te downloaden: https://code.visualstudio.com/
+- Installatie User based uitvoeren (niet program files want veel collega's hebben geen BOW).
+- Python downloaden van python.org en installeren als gebruiker.
+- In VS Code Python (en andere) addon(s) installeren. Als een (basis) project wordt geopend met een .vscode/extensions.json worden die extensions bijna automatisch geïnstalleerd.
 
 Linting
 =======
 Elke programmeur gebruikt standaard Linters zodat het makkelijk is om aan een standaard opmaak ("black"), veiligheid ("bandit") en naamgeving ("pep8") te conformeren. Beide worden VS Code automatisch toegepast als je het basis project gebruikt.
 
 Gebruikte linters zijn:
-	- Black: checkt opmaak
-    - Flake8: checkt pep8
-	- Isort: Zorgt voor nette volgorde in import
-	- Bandit: checkt op veiligheids issues
+
+- Black: checkt opmaak
+- Flake8: checkt pep8
+- Isort: Zorgt voor nette volgorde in import
+- Bandit: checkt op veiligheids issues
 
 Header
 ======

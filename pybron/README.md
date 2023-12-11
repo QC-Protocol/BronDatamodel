@@ -23,7 +23,7 @@ Linting
 Elke programmeur gebruikt standaard Linters zodat het makkelijk is om aan een standaard opmaak ("black"), veiligheid ("bandit") en naamgeving ("pep8") te conformeren. Beide worden VS Code automatisch toegepast als je het basis project gebruikt.
 
 Gebruikte linters zijn:
-
+
 - Black: checkt opmaak
 - Flake8: checkt pep8
 - Isort: Zorgt voor nette volgorde in import
@@ -36,14 +36,13 @@ Header inhoud:
 ```
 -*- coding: utf-8 -*-
 
-@Created on %(date)s
+    @Created on %(date)s
 
-@author: 		%(username)s
-@Last edited on: 	%(date)s
-@script type: 	A eigen gebruik, B script, C tool, D complexe tool (lijstje uit ander document)
-		@copyright: 	Antea Group B.V. 2023
+    @author: 		%(username)s
+    @script type: 	A eigen gebruik, B script, C tool, D complexe tool (lijstje uit ander document)
+    @copyright: 	Antea Group B.V. 2023
 
-		@desc: <typen>
+    @desc: <typen>
 ```
 
 Commentaar tekens worden door de plugin aangepast aan de taal/bestandsformaat.

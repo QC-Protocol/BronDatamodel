@@ -4,6 +4,8 @@
         "ms-python.isort",
         "ms-python.mypy-type-checker",
         "ms-python.python",
-        "doi.fileheadercomment"
+        "doi.fileheadercomment",
+        "esbenp.prettier-vscode",
+        "njpwerner.autodocstring"
     ]
 }

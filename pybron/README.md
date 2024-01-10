@@ -18,6 +18,13 @@ Visual Studio Code
 - Python downloaden van python.org en installeren als gebruiker.
 - In VS Code Python (en andere) addon(s) installeren. Als een (basis) project wordt geopend met een .vscode/extensions.json worden die extensions bijna automatisch geïnstalleerd.
 
+Virtual environment
+===================
+-	Als je externe pakketten gebruikt installeer je die met  `pip install <pakketnaam>`.
+-	Om te voorkomen dat twee verschillende scripts conflicterende pakketten installeren gebruik je altijd een virtual environment.
+-	Een virtual environment maak je met: `python -m venv venv`. Dit doe je er project en in dezelfde folder.
+-	Als je een script wilt gebruiken moet je de virtual environment activeren. Op de command line doe je dit door `.\venv\Scripts\activate`. VS Code doet dit meestal automatisch. Zo niet kun je dit doen door rechtsonder op python versie te klikken en dan middenboven je venv op te zoeken.
+
 Linting
 =======
 Elke programmeur gebruikt standaard Linters zodat het makkelijk is om aan een standaard opmaak ("black"), veiligheid ("bandit") en naamgeving ("pep8") te conformeren. Beide worden VS Code automatisch toegepast als je het basis project gebruikt.

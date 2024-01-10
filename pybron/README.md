@@ -24,6 +24,7 @@ Virtual environment
 -	Om te voorkomen dat twee verschillende scripts conflicterende pakketten installeren gebruik je altijd een virtual environment.
 -	Een virtual environment maak je met: `python -m venv venv`. Dit doe je er project en in dezelfde folder.
 -	Als je een script wilt gebruiken moet je de virtual environment activeren. Op de command line doe je dit door `.\venv\Scripts\activate`. VS Code doet dit meestal automatisch. Zo niet kun je dit doen door rechtsonder op python versie te klikken en dan middenboven je venv op te zoeken.
+
 Documentatie: [venv](https://docs.python.org/3/library/venv.html)
 
 Linting
@@ -79,4 +80,5 @@ Type hinting
 - Om de code-completion van VS code beter te maken kun je wel types specificeren voor bijvoorbeeld de argumenten van een functie.
 - Ook de automatische documentatie wordt daar beter van
 - Met “mypy” kun je checken of je types gebruikt die worden verwacht, dat kan dan weer problemen in de toekomst voorkomen als je de code anders gebruikt dan initieel voorzien.
+
 Documentatie: [mypy](https://mypy-lang.org/)

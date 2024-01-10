@@ -82,3 +82,13 @@ Type hinting
 - Met “mypy” kun je checken of je types gebruikt die worden verwacht, dat kan dan weer problemen in de toekomst voorkomen als je de code anders gebruikt dan initieel voorzien.
 
 Documentatie: [mypy](https://mypy-lang.org/)
+
+Verder lezen
+============
+
+-	Git gebruik
+    -	We houden ons hierbij zoveel mogelijk aan de [git flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) werkafspraken. Dit kan met de beschreven tool, maar ook door het zelf aanmaken en mergen van branches.
+-	FastAPI
+-	Front-end development
+-	Django
+

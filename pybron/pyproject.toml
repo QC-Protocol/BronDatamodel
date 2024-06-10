@@ -6,11 +6,9 @@ build-backend = "setuptools.build_meta"
 write_to = "<package>/_version.py"
 
 [project]
-name = "<package>"
+name = "rws_ketentest"
 version = "0.0.1"
-dependencies = [
-    "click"
-]
+dependencies = ["click", "scipy"]
 
 [tool.setuptools.packages.find]
 include = ["<package>"]
@@ -19,7 +17,15 @@ include = ["<package>"]
 main = "<package>.main:main"
 
 [project.optional-dependencies]
-dev = ["black", "flake8", "pre-commit", "pytest", "pytest-order", "build", "tox"]
+dev = [
+  "black",
+  "flake8",
+  "pre-commit",
+  "pytest",
+  "pytest-order",
+  "build",
+  "tox",
+]
 
 [tool.bandit]
 exclude_dirs = ["dist", "doc"]
@@ -46,9 +52,7 @@ commands = pytest
 profile = "black"
 
 [tool.coverage.run]
-omit = [
-  "env/*",
-]
+omit = ["env/*"]
 
 [tool.mypy]
 plugins = ["pydantic.mypy"]
@@ -58,5 +62,4 @@ module = "tests.*"
 ignore_errors = true
 
 [tool.pytest.ini_options]
-testpaths = [
-]
+testpaths = []

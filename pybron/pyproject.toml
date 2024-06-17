@@ -3,18 +3,18 @@ requires = ["setuptools>=65", "wheel", "setuptools_scm>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools_scm]
-write_to = "rws_ketentest/_version.py"
+write_to = "rws_bron/_version.py"
 
 [project]
-name = "rws_ketentest"
+name = "rws_bron"
 version = "0.0.1"
-dependencies = ["click", "scipy"]
+dependencies = ["click", "scipy", "pydantic", "pandas"]
 
 [tool.setuptools.packages.find]
-include = ["rws_ketentest"]
+include = ["rws_bron"]
 
 [project.scripts]
-main = "rws_ketentest.main:main"
+generate_bron_schemas = "rws_bron.bin.generate_pydantic_schemas:main"
 
 [project.optional-dependencies]
 dev = [

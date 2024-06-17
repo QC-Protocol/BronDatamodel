@@ -57,11 +57,13 @@ def testdata_filename_bronv3() -> Path:
     )
 
 
+@pytest.mark.skip(reason="We're not supposed to be able to read BronV1")
 def test_basic_read(testdata_filename: Path):
     data = loadmat(testdata_filename.__str__())
     assert len(data) > 0
 
 
+@pytest.mark.skip(reason="We're not supposed to be able to read BronV2")
 def test_bronv2_read(testdata_filename_bronv2: Path):
     data = loadmat(testdata_filename_bronv2.__str__())
     assert len(data) > 0

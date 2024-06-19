@@ -11,26 +11,13 @@ Copyright 2024 - 2024 Antea Nederland B.V.
 
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 import scipy.io as spio
 
 from rws_bron.schema.BRON import GMW
-from rws_bron.schema.excel_shema import (
-    category_dataframe_to_pydantic_enum,
-    generate_pydantic_schemas,
-    read_excel_categories,
-    read_excel_schema,
-)
 from rws_bron.schema.matlabbasemodel import datetime2matlab
-
-
-def generate_schemas(target_directory: Optional[Path] = None):
-    df_schema = read_excel_schema()
-    df_cat = read_excel_categories()
-    enums = category_dataframe_to_pydantic_enum(df_cat)
-    generate_pydantic_schemas(df_schema, enums, target_directory)
 
 
 def replace_empty(d: dict) -> dict:

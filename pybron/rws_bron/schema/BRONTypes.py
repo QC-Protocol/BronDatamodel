@@ -1,11 +1,10 @@
-from typing import Optional
+from typing import Any, Optional
 
-from pydantic import BaseModel
+from rws_bron.schema.matlabbasemodel import MatlabBaseModel
 
 from .BRONEnums import (
     ConstructionStandardEnum,
     DeliveryContextEnum,
-    EventNameEnum,
     GeenEnum,
     GlueEnum,
     HeadProtectorEnum,
@@ -21,24 +20,24 @@ from .BRONEnums import (
 )
 
 
-class Adm(BaseModel):
+class Adm(MatlabBaseModel):
     WellID: Optional[int]
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
-    QualityRegime: Optional[str]
-    ObjRgstrDateTime: Optional[str]
+    QualityRegime: Optional[int]
+    ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
     WellCode: Optional[str]
 
 
-class Tube(BaseModel):
+class Tube(MatlabBaseModel):
     WellID: Optional[int]
     TubeNo: Optional[int]
     Type: Optional[TypeEnum]
-    ArtesianWellCapPresent: Optional[str]
+    ArtesianWellCapPresent: Optional[float]
     TubeDiameter: Optional[float]
-    IsVarTubeDiam: Optional[str]
+    IsVarTubeDiam: Optional[float]
     Status: Optional[StatusEnum]
     TopLevel: Optional[float]
     VertPosMethodTop: Optional[VertPosMethodTopEnum]
@@ -50,23 +49,23 @@ class Tube(BaseModel):
     FilterBottomLevel: Optional[float]
     sedSumpLength: Optional[float]
     LoggerBrand: Optional[str]
-    LoggerDepth: Optional[str]
+    LoggerDepth: Optional[float]
     LoggerSerial: Optional[str]
     LoggerType: Optional[str]
-    GldBROID: Optional[str]
+    GLDBROID: Optional[str]
 
 
-class History(BaseModel):
+class History(MatlabBaseModel):
     WellID: Optional[int]
     TubeNo: Optional[int]
-    EventName: Optional[EventNameEnum]
-    DateTime: Optional[str]
+    EventName: Optional[str]
+    DateTime: Optional[float]
     Comment: Optional[str]
     CommentBy: Optional[str]
-    EventData: Optional[str]
+    EventData: Optional[Any]
 
 
-class Well(BaseModel):
+class Well(MatlabBaseModel):
     Name: Optional[str]
     DeliveryContext: Optional[DeliveryContextEnum]
     ConstructionStandard: Optional[ConstructionStandardEnum]
@@ -86,5 +85,5 @@ class Well(BaseModel):
     OLGACode: Optional[str]
 
 
-class Geen(BaseModel):
+class Geen(MatlabBaseModel):
     Geen: Optional[GeenEnum]

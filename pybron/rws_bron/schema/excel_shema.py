@@ -39,10 +39,12 @@ datatype_map = {
     "[KvKNumber]": "str",
     "[Integer]": "int",
     "[PutCode]": "str",
-    "[MatlabDate]": "str",
+    "[MatlabDate]": "float",
     "[NITGCode]": "str",
     "[m]": "float",
     "[m+ref]": "float",
+    "[NaNBoolean]": "float",
+    "[-m+topw]": "float",
 }
 
 categorical_map = {
@@ -51,7 +53,9 @@ categorical_map = {
     "WellStability": "str",
     "LoggerBrand": "str",
     "LoggerType": "str",
-    "QualityRegime": "str",
+    "QualityRegime": "int",
+    "ObjRgstrDateTime": "float",
+    "EventName": "str",
 }
 
 
@@ -157,9 +161,9 @@ def generate_pydantic_schemas(
     import_enum_str = ",\n    ".join(enum_list_str)
     with (target_directory / "BRONTypes.py").open("wt") as fid:
         fid.write("from typing import Optional\n\n")
-        fid.write("from pydantic import BaseModel\n\n")
+        fid.write("from rws_bron.schema.matlabbasemodel import MatlabBaseModel\n\n")
         fid.write(f"from .BRONEnums import (\n    {import_enum_str},\n)\n")
         for k, v in ps.items():
-            fid.write(f"\n\nclass {k}(BaseModel):\n")
+            fid.write(f"\n\nclass {k}(MatlabBaseModel):\n")
             for k2, v2 in v.items():
                 fid.write(f"    {k2}: Optional[{v2}]\n")

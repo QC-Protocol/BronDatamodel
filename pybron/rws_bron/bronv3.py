@@ -9,20 +9,21 @@ Modified By: Dirkjan Krijnders
 Copyright 2024 - 2024 Antea Nederland B.V.
 """
 
+from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 import numpy as np
 import scipy.io as spio
 
+from rws_bron.schema.BRON import GMW
 from rws_bron.schema.excel_shema import (
     category_dataframe_to_pydantic_enum,
     generate_pydantic_schemas,
     read_excel_categories,
     read_excel_schema,
 )
-
-from .schema.BRONTypes import Well
+from rws_bron.schema.matlabbasemodel import datetime2matlab
 
 
 def generate_schemas(target_directory: Optional[Path] = None):
@@ -30,6 +31,16 @@ def generate_schemas(target_directory: Optional[Path] = None):
     df_cat = read_excel_categories()
     enums = category_dataframe_to_pydantic_enum(df_cat)
     generate_pydantic_schemas(df_schema, enums, target_directory)
+
+
+def replace_empty(d: dict) -> dict:
+    for k, v in d.items():
+        if isinstance(v, list) and len(v) == 0:
+            d[k] = ""
+    return d
+
+
+# def dict_to_model()
 
 
 def loadmat(filename):
@@ -48,6 +59,10 @@ def loadmat(filename):
         for key in d:
             if isinstance(d[key], spio.matlab.mat_struct):
                 d[key] = _todict(d[key])
+            elif isinstance(d[key], np.ndarray):
+                d[key] = _tolist(d[key])
+            else:
+                d[key] = d[key]
         return d
 
     def _todict(matobj):
@@ -63,7 +78,7 @@ def loadmat(filename):
                 d[strg] = _tolist(elem)
             else:
                 d[strg] = elem
-        return d
+        return replace_empty(d)
 
     def _tolist(ndarray):
         """
@@ -86,21 +101,20 @@ def loadmat(filename):
 
 
 def loadbronv3(filename: Path) -> dict[str, list[dict]]:
-    data = loadmat(filename)
+    data_py = loadmat(filename)
+    data_py["GMW"] = [GMW.from_dict(gmw) for gmw in data_py["GMW"]]
+    return data_py
 
-    for index in range(len(data["GMW"])):
-        d = dict(
-            zip(
-                data["GMW"][index].Well._fieldnames,
-                [
-                    getattr(data["GMW"][index].Well, fn)
-                    for fn in data["GMW"][index].Well._fieldnames
-                ],
-            )
-        )
-        for k, v in d.items():
-            if not v:
-                d[k] = None
-        data["GMW"][index].Well = Well(**d)
 
-    return data
+def savebronv3(filename: Path, data: dict[str, list[dict]]):
+    data_write: dict[str, list[dict[str, Any]]] = {
+        "GMW": [gmw.as_matlab_dict() for gmw in data["GMW"]],
+        "File": {
+            "Name": filename.name,
+            "Model": {
+                "Nr": ["0", "9", "x.8", "(concept)"],
+                "Date": datetime2matlab(datetime.now()),
+            },
+        },
+    }
+    spio.savemat(str(filename), data_write)

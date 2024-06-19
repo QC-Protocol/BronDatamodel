@@ -18,8 +18,9 @@ import pytest
 # from scipy.io import loadmat
 from mat4py import loadmat
 
-from rws_bron.bronv3 import Well, generate_schemas, loadbronv3, savebronv3
+from rws_bron.bronv3 import generate_schemas, loadbronv3, savebronv3
 from rws_bron.schema.BRON import GMW
+from rws_bron.schema.BRONTypes import Well
 
 
 @pytest.fixture

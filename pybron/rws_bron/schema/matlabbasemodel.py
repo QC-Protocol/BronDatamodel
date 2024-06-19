@@ -22,9 +22,9 @@ def matlab2datetime(matlab_datenum: int) -> datetime:
     return day + dayfrac
 
 
-# def datetime2matlab(dt: datetime) -> int:
-#     ordinal = datetime.toordinal(dt)
-#     return 70000
+def datetime2matlab(dt: datetime) -> int:
+    #     ordinal = datetime.toordinal(dt)
+    return 70000
 
 
 class MatlabBaseModel(BaseModel):

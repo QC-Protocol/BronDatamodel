@@ -8,7 +8,7 @@ write_to = "rws_bron/_version.py"
 [project]
 name = "rws_bron"
 version = "0.0.1"
-dependencies = ["click", "scipy", "pydantic", "pandas"]
+dependencies = ["click", "scipy", "pydantic", "pandas", "openpyxl"]
 
 [tool.setuptools.packages.find]
 include = ["rws_bron"]

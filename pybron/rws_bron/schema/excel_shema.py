@@ -23,7 +23,9 @@ def read_excel_schema(schema_filename: Optional[Path] = None) -> DataFrame:
         schema_filename = (
             Path(os.path.dirname(os.path.realpath(__file__)))
             / ".."
-            / "data"
+            / ".."
+            / "BronDataModel"
+            / "BROMappings"
             / "Mapping en definitie BRO GMW.xlsx"
         )
 
@@ -38,6 +40,7 @@ datatype_map = {
     "[BroID]": "str",
     "[KvKNumber]": "str",
     "[Integer]": "int",
+    "[Uint8]": "int",
     "[PutCode]": "str",
     "[MatlabDate]": "float",
     "[NITGCode]": "str",
@@ -110,6 +113,29 @@ def read_excel_categories(category_filename: Optional[Path] = None) -> DataFrame
         category_df = read_excel(fid, sheet_name="Waardelijsten", header=0)
 
     return category_df
+
+
+def read_excel_waardelijsten(
+    category_filename: Optional[Path] = None,
+) -> dict[str : list[str]]:
+    if not category_filename:
+        category_filename = (
+            Path(os.path.dirname(os.path.realpath(__file__)))
+            / ".."
+            / ".."
+            / "BronDataModel"
+            / "BroCategoricals"
+            / "Waardelijsten BRO GMW.xlsx"
+        )
+
+    with category_filename.open("rb") as fid:
+        category_df_sheets = read_excel(fid, header=0, sheet_name=None)
+
+    d = dict()
+    for sheetname, sheet in category_df_sheets.items():
+        d[sheetname] = list(sheet["Codes"][1:].values)
+
+    return d
 
 
 def category_dataframe_to_pydantic_enum(df: DataFrame) -> dict[str, Enum]:

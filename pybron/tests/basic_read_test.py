@@ -15,12 +15,12 @@ from typing import Any
 
 import pytest
 
-# from scipy.io import loadmat
-from mat4py import loadmat
-
 from rws_bron.bronv3 import generate_schemas, loadbronv3, savebronv3
 from rws_bron.schema.BRON import GMW
 from rws_bron.schema.BRONTypes import Well
+
+# from scipy.io import loadmat
+# from mat4py import loadmat
 
 
 @pytest.fixture
@@ -67,18 +67,6 @@ def testdata_filename_bronv3_write() -> Path:
         / "data"
         / "2024-06-10 Testdata Provincie Utrecht (export tables2structs d.GMW v6) test.bron"  # noqa: E501
     )
-
-
-@pytest.mark.skip(reason="We're not supposed to be able to read BronV1")
-def test_basic_read(testdata_filename: Path):
-    data = loadmat(testdata_filename.__str__())
-    assert len(data) > 0
-
-
-@pytest.mark.skip(reason="We're not supposed to be able to read BronV2")
-def test_bronv2_read(testdata_filename_bronv2: Path):
-    data = loadmat(testdata_filename_bronv2.__str__())
-    assert len(data) > 0
 
 
 def test_bronv3_read(testdata_filename_bronv3: Path):

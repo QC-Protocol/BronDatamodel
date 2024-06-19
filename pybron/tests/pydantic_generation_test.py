@@ -14,6 +14,7 @@ from rws_bron.schema.excel_shema import (
     category_dataframe_to_pydantic_enum,
     read_excel_categories,
     read_excel_schema,
+    read_excel_waardelijsten,
     source_attribute_map,
 )
 
@@ -35,6 +36,11 @@ def test_convert_excel_schema():
     enums = category_dataframe_to_pydantic_enum(df_cat)
     types = _excel_schema_to_pydantic_str(df_schema, enums)
     assert types["Well"]["ConstructionStandard"] == "ConstructionStandardEnum"
+
+
+def test_read_excel_waardelijsten():
+    df = read_excel_waardelijsten()
+    assert "kokerNietMetaal" in df["WellHeadProtector"]
 
 
 def test_read_excel_categories():

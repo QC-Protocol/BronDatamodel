@@ -48,6 +48,7 @@ datatype_map = {
     "[m+ref]": "float",
     "[NaNBoolean]": "float",
     "[-m+topw]": "float",
+    "[Table]": "Any",
 }
 
 categorical_map = {
@@ -58,15 +59,19 @@ categorical_map = {
     "LoggerType": "str",
     "QualityRegime": "int",
     "ObjRgstrDateTime": "float",
-    "EventName": "str",
+    "EventName": "Any",
 }
 
 
 def source_attribute_map(schema: DataFrame) -> dict[str, str]:
-    sam = dict(zip(schema["SourceAttributeNL"], schema["TargetAttributeEng"]))
-    sam["WellID"] = "WellID"
-    sam["BROID"] = "BROID"
-    return sam
+    # sam = dict(zip(schema["TargetAttributeEng"], schema["SourceAttributeEng"]))
+    sam = dict(zip(schema["SourceAttributeEng"], schema["TargetAttributeEng"]))
+    # sam["WellID"] = "WellID"
+    # sam["BROID"] = "BROID"
+    sam["HorizontalCrs"] = "CRS"
+    sam["CorrectionReason"] = "BROID"
+    sam2 = {(k[0].upper() + k[1:]).strip(): v for k, v in sam.items()}
+    return sam2
 
 
 def _excel_schema_to_pydantic_str(
@@ -89,6 +94,8 @@ def _excel_schema_to_pydantic_str(
                 if attr in categorical_map:
                     datatype_py = categorical_map[attr]
                 else:
+                    if datatype.name == "BROID":
+                        pass
                     datatype_py = datatype.name + "Enum"
             else:
                 if datatype_name in datatype_map:
@@ -136,6 +143,32 @@ def read_excel_waardelijsten(
         d[sheetname] = list(sheet["Codes"][1:].values)
 
     return d
+
+
+def category_dict_to_pydantic_enum(df: dict[str, list[str]]) -> dict[str, Enum]:
+    keys: list[str] = [
+        key for key in df.keys() if key.lower() not in ["[afgeleid]", "[janeeonbekend]"]
+    ]
+    enums = {}
+    schema = read_excel_schema()
+    sam = source_attribute_map(schema)
+    for key in keys:
+        enum = Enum(
+            key,
+            {
+                value: value
+                for value in df[key]
+                if isinstance(value, str)
+                and value != "Geel gearceerd = 'Waarde alleen IMBRO/A'"
+            },
+        )
+        if key in sam:
+            enums[sam[key]] = enum
+    del enums["Afgeleid"]
+    del enums["CRS"]
+    del enums["EventName"]
+    del enums["BROID"]
+    return enums
 
 
 def category_dataframe_to_pydantic_enum(df: DataFrame) -> dict[str, Enum]:
@@ -186,7 +219,7 @@ def generate_pydantic_schemas(
     enum_list_str.sort()
     import_enum_str = ",\n    ".join(enum_list_str)
     with (target_directory / "BRONTypes.py").open("wt") as fid:
-        fid.write("from typing import Optional\n\n")
+        fid.write("from typing import Optional, Any\n\n")
         fid.write("from rws_bron.schema.matlabbasemodel import MatlabBaseModel\n\n")
         fid.write(f"from .BRONEnums import (\n    {import_enum_str},\n)\n")
         for k, v in ps.items():

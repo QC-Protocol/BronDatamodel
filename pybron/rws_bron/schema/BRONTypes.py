@@ -17,6 +17,7 @@ from .BRONEnums import (
     TypeEnum,
     VertPosMethodSurfEnum,
     VertPosMethodTopEnum,
+    WellStabilityEnum,
 )
 
 
@@ -58,7 +59,7 @@ class Tube(MatlabBaseModel):
 class History(MatlabBaseModel):
     WellID: Optional[int]
     TubeNo: Optional[int]
-    EventName: Optional[str]
+    EventName: Optional[Any]
     DateTime: Optional[float]
     Comment: Optional[str]
     CommentBy: Optional[str]
@@ -70,7 +71,7 @@ class Well(MatlabBaseModel):
     DeliveryContext: Optional[DeliveryContextEnum]
     ConstructionStandard: Optional[ConstructionStandardEnum]
     InitialFunction: Optional[InitialFunctionEnum]
-    WellStability: Optional[str]
+    WellStability: Optional[WellStabilityEnum]
     NITGCode: Optional[str]
     Owner: Optional[str]
     Maintainer: Optional[str]

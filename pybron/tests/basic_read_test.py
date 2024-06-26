@@ -15,9 +15,10 @@ from typing import Any
 
 import pytest
 
-from rws_bron.bronv3 import generate_schemas, loadbronv3, savebronv3
+from rws_bron.bronv3 import loadbronv3, savebronv3
 from rws_bron.schema.BRON import GMW
 from rws_bron.schema.BRONTypes import Well
+from rws_bron.schema_generation import generate_schemas
 
 # from scipy.io import loadmat
 # from mat4py import loadmat

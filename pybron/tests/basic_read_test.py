@@ -39,7 +39,7 @@ def testdata_filename() -> Path:
     return (
         Path(os.path.dirname(os.path.realpath(__file__)))
         / "data"
-        / "2024-05-21 Testdata Provincie Utrecht (export).bron"
+        / "2024-06-27 Testdata Provincie Utrecht (export).bron2"
     )
 
 
@@ -57,7 +57,7 @@ def testdata_filename_bronv3() -> Path:
     return (
         Path(os.path.dirname(os.path.realpath(__file__)))
         / "data"
-        / "2024-06-10 Testdata Provincie Utrecht (export tables2structs d.GMW v6).bron"
+        / "2024-06-27 Testdata Provincie Utrecht (export).bron2"
     )
 
 
@@ -66,7 +66,7 @@ def testdata_filename_bronv3_write() -> Path:
     return (
         Path(os.path.dirname(os.path.realpath(__file__)))
         / "data"
-        / "2024-06-10 Testdata Provincie Utrecht (export tables2structs d.GMW v6) test.bron"  # noqa: E501
+        / "2024-05-21 Testdata Provincie Utrecht (export, v7.3).bron"
     )
 
 

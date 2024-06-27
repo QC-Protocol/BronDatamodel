@@ -26,7 +26,7 @@ def read_excel_schema(
             Path(os.path.dirname(os.path.realpath(__file__)))
             / ".."
             / ".."
-            / "BronDataModel"
+            / ".."
             / "BROMappings"
             / f"Mapping en definitie BRO {namespace}.xlsx"
         )
@@ -158,7 +158,7 @@ def read_excel_waardelijst(
             Path(os.path.dirname(os.path.realpath(__file__)))
             / ".."
             / ".."
-            / "BronDataModel"
+            / ".."
             / "BroCategoricals"
             / f"Waardelijsten BRO {namespace}.xlsx"
         )

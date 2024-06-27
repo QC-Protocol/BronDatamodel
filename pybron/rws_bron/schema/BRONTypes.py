@@ -1,5 +1,5 @@
 # flake8: noqa
-from typing import Any, Optional
+from typing import Optional, Any
 
 from rws_bron.schema.matlabbasemodel import MatlabBaseModel
 
@@ -23,7 +23,6 @@ from .BRONEnums import (
     GLDObservationTypeEnum,
     GLDProcessReferenceEnum,
     GLDProcessTypeEnum,
-    GLDRefLevelEnum,
     GLDStatusCodeEnum,
     GLDStatusQualityControlEnum,
     GMNCorrectionReasonEnum,
@@ -83,7 +82,7 @@ class GMWTube(MatlabBaseModel):
     SockMaterial: Optional[GMWSockMaterialEnum]
     FilterTopLevel: Optional[float]
     FilterBottomLevel: Optional[float]
-    sedSumpLength: Optional[float]
+    sedSumpLength          : Optional[float]
     LoggerBrand: Optional[str]
     LoggerDepth: Optional[float]
     LoggerSerial: Optional[str]

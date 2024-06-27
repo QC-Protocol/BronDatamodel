@@ -59,7 +59,7 @@ def test_convert_excel_schema_GMW():
     df_cat = read_excel_waardelijst()
     enums = category_dict_to_pydantic_enum(df_cat)
     types = _excel_schema_to_pydantic_str(df_schema, enums)
-    assert types["Well"]["ConstructionStandard"] == "ConstructionStandardEnum"
+    assert types["GMWWell"]["ConstructionStandard"] == "GMWConstructionStandardEnum"
 
 
 def test_convert_excel_schema_GMN():
@@ -67,7 +67,7 @@ def test_convert_excel_schema_GMN():
     df_cat = read_excel_waardelijst()
     enums = category_dict_to_pydantic_enum(df_cat)
     types = _excel_schema_to_pydantic_str(df_schema, enums)
-    assert types["Net"]["GroundwaterAspect"] == "GroundwaterAspectEnum"
+    assert types["GMNNet"]["GroundwaterAspect"] == "GMNGroundwaterAspectEnum"
 
 
 def test_convert_excel_schema_GLD():
@@ -75,8 +75,8 @@ def test_convert_excel_schema_GLD():
     df_cat = read_excel_waardelijst()
     enums = category_dict_to_pydantic_enum(df_cat)
     types = _excel_schema_to_pydantic_str(df_schema, enums)
-    assert types["Source"]["Drift"] == "float"
-    assert types["Source"]["Gravity"] == "float"
+    assert types["GLDSource"]["Drift"] == "float"
+    assert types["GLDSource"]["Gravity"] == "float"
 
 
 def test_read_excel_waardelijsten():

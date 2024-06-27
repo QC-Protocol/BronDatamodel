@@ -17,7 +17,7 @@ import pytest
 
 from rws_bron.bronv3 import loadbronv3, savebronv3
 from rws_bron.schema.BRON import GMW
-from rws_bron.schema.BRONTypes import Well
+from rws_bron.schema.BRONTypes import GMWWell
 from rws_bron.schema_generation import generate_schemas
 
 # from scipy.io import loadmat
@@ -74,7 +74,7 @@ def test_bronv3_read(testdata_filename_bronv3: Path):
     data = loadbronv3(testdata_filename_bronv3)
     assert data["GMW"][0].adm[0].BROID == "GMW000000042649"
     assert data["GMW"][0].well.XCoordinate == 157495.0
-    assert isinstance(data["GMW"][0].well, Well)
+    assert isinstance(data["GMW"][0].well, GMWWell)
 
 
 def test_bronv3_write(
@@ -112,7 +112,7 @@ def well_data() -> dict[str, Any]:
 
 
 def test_well(renew_schemas, well_data):
-    w = Well(**well_data)
+    w = GMWWell(**well_data)
 
     assert w
 

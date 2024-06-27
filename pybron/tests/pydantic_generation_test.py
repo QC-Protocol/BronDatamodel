@@ -15,6 +15,7 @@ from rws_bron.schema.excel_shema import (
     category_dict_to_pydantic_enum,
     read_excel_categories,
     read_excel_schema,
+    read_excel_waardelijst,
     read_excel_waardelijsten,
     source_attribute_map,
 )
@@ -25,23 +26,62 @@ def test_read_excel_schema():
     assert df["TargetEntity"][6] == "Well"
 
 
-def test_source_attribute_map():
+def test_read_excel_schema_GMN():
+    df = read_excel_schema(namespace="GMN")
+    assert df["TargetEntity"][6] == "Net"
+
+
+def test_read_excel_schema_GLD():
+    df = read_excel_schema(namespace="GLD")
+    assert df["TargetEntity"][6] == "Adm"
+
+
+def test_source_attribute_map_GMW():
     df_schema = read_excel_schema()
     sam = source_attribute_map(df_schema)
     assert sam["ConstructionStandard"] == "ConstructionStandard"
 
 
-def test_convert_excel_schema():
+def test_source_attribute_map_GLD():
+    df_schema = read_excel_schema(namespace="GLD")
+    sam = source_attribute_map(df_schema)
+    assert sam["QualityRegime"] == "QualityRegime"
+
+
+def test_source_attribute_map_GMN():
+    df_schema = read_excel_schema(namespace="GMN")
+    sam = source_attribute_map(df_schema)
+    assert sam["GroundwaterAspect"] == "GroundwaterAspect"
+
+
+def test_convert_excel_schema_GMW():
     df_schema = read_excel_schema()
-    df_cat = read_excel_waardelijsten()
+    df_cat = read_excel_waardelijst()
     enums = category_dict_to_pydantic_enum(df_cat)
     types = _excel_schema_to_pydantic_str(df_schema, enums)
     assert types["Well"]["ConstructionStandard"] == "ConstructionStandardEnum"
 
 
+def test_convert_excel_schema_GMN():
+    df_schema = read_excel_schema(namespace="GMN")
+    df_cat = read_excel_waardelijst()
+    enums = category_dict_to_pydantic_enum(df_cat)
+    types = _excel_schema_to_pydantic_str(df_schema, enums)
+    assert types["Net"]["GroundwaterAspect"] == "GroundwaterAspectEnum"
+
+
+def test_convert_excel_schema_GLD():
+    df_schema = read_excel_schema(namespace="GLD")
+    df_cat = read_excel_waardelijst()
+    enums = category_dict_to_pydantic_enum(df_cat)
+    types = _excel_schema_to_pydantic_str(df_schema, enums)
+    assert types["Source"]["Drift"] == "float"
+    assert types["Source"]["Gravity"] == "float"
+
+
 def test_read_excel_waardelijsten():
-    df = read_excel_waardelijsten()
-    assert "kokerNietMetaal" in df["WellHeadProtector"]
+    df = read_excel_waardelijst()
+    assert "kokerNietMetaal" in df["GMWWellHeadProtector"]
 
 
 def test_read_excel_categories():
@@ -56,6 +96,13 @@ def test_category_dataframe_to_pydantic_enum():
 
 
 def test_category_dict_to_pydantic_enum():
+    df = read_excel_waardelijst()
+    enums = category_dict_to_pydantic_enum(df)
+    assert len(enums["GMWWellHeadProtector"]) == 8
+
+
+def test_all_namespaces_category_dict_to_pydantic_enum():
     df = read_excel_waardelijsten()
     enums = category_dict_to_pydantic_enum(df)
-    assert len(enums["HeadProtector"]) == 8
+    assert len(enums["GMWWellHeadProtector"]) == 8
+    assert len(enums["GMNGroundwaterAspect"]) == 3

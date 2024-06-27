@@ -18,7 +18,9 @@ from typing import Optional
 from pandas import DataFrame, read_excel
 
 
-def read_excel_schema(schema_filename: Optional[Path] = None) -> DataFrame:
+def read_excel_schema(
+    schema_filename: Optional[Path] = None, namespace: str = "GMW"
+) -> DataFrame:
     if not schema_filename:
         schema_filename = (
             Path(os.path.dirname(os.path.realpath(__file__)))
@@ -26,11 +28,12 @@ def read_excel_schema(schema_filename: Optional[Path] = None) -> DataFrame:
             / ".."
             / "BronDataModel"
             / "BROMappings"
-            / "Mapping en definitie BRO GMW.xlsx"
+            / f"Mapping en definitie BRO {namespace}.xlsx"
         )
 
     with schema_filename.open("rb") as fid:
         schema_df = read_excel(fid, header=0)
+    schema_df.namespace = namespace
 
     return schema_df
 
@@ -49,23 +52,35 @@ datatype_map = {
     "[NaNBoolean]": "float",
     "[-m+topw]": "float",
     "[Table]": "Any",
+    "[m3 s−2 kg−1]": "float",
+    "[kgm-3]": "float",
+    "[Days]": "int",
 }
 
 categorical_map = {
     "VegType": "str",
     "VegTypo": "str",
-    "WellStability": "str",
+    # "WellStability": "str",
     "LoggerBrand": "str",
     "LoggerType": "str",
     "QualityRegime": "int",
     "ObjRgstrDateTime": "float",
     "EventName": "Any",
+    "RefLevel": "Any",
 }
 
 
 def source_attribute_map(schema: DataFrame) -> dict[str, str]:
     # sam = dict(zip(schema["TargetAttributeEng"], schema["SourceAttributeEng"]))
-    sam = dict(zip(schema["SourceAttributeEng"], schema["TargetAttributeEng"]))
+    sam = dict(
+        zip(
+            [value.strip() for value in schema["TargetAttributeEng"]],
+            [
+                value[0].upper() + value[1:].strip()
+                for value in schema["SourceAttributeEng"]
+            ],
+        )
+    )
     # sam["WellID"] = "WellID"
     # sam["BROID"] = "BROID"
     sam["HorizontalCrs"] = "CRS"
@@ -77,10 +92,13 @@ def source_attribute_map(schema: DataFrame) -> dict[str, str]:
 def _excel_schema_to_pydantic_str(
     schema: DataFrame, enums: dict[str, Enum]
 ) -> dict[str, dict[str, str]]:
+    sam = source_attribute_map(schema)
     classes: list[str] = [c for c in schema["TargetEntity"].unique() if c != "Afgeleid"]
     r: dict[str, dict[str, str]] = {}
     for c in classes:
-        r[c] = {}
+        if c == "Geen":
+            continue
+        r[schema.namespace + c] = {}
         attrs = (
             schema[["TargetAttributeEng", "TargetDatatype"]]
             .where(schema["TargetEntity"] == c)
@@ -96,13 +114,16 @@ def _excel_schema_to_pydantic_str(
                 else:
                     if datatype.name == "BROID":
                         pass
-                    datatype_py = datatype.name + "Enum"
+                    if datatype.name in sam:
+                        datatype_py = schema.namespace + sam[datatype.name] + "Enum"
+                    else:
+                        datatype_py = schema.namespace + datatype.name + "Enum"
             else:
                 if datatype_name in datatype_map:
                     datatype_py = datatype_map[datatype_name]
                 else:
                     datatype_py = "str"
-            r[c][attr] = datatype_py
+            r[schema.namespace + c][attr] = datatype_py
 
     return r
 
@@ -122,9 +143,16 @@ def read_excel_categories(category_filename: Optional[Path] = None) -> DataFrame
     return category_df
 
 
-def read_excel_waardelijsten(
-    category_filename: Optional[Path] = None,
-) -> dict[str : list[str]]:
+def read_excel_waardelijsten() -> dict[str, list[str]]:
+    ps = {}
+    for ns in ["GMW", "GMN", "GLD", "GAR"]:
+        ps = {**ps, **read_excel_waardelijst(namespace=ns)}
+    return ps
+
+
+def read_excel_waardelijst(
+    category_filename: Optional[Path] = None, namespace: str = "GMW"
+) -> dict[str, list[str]]:
     if not category_filename:
         category_filename = (
             Path(os.path.dirname(os.path.realpath(__file__)))
@@ -132,7 +160,7 @@ def read_excel_waardelijsten(
             / ".."
             / "BronDataModel"
             / "BroCategoricals"
-            / "Waardelijsten BRO GMW.xlsx"
+            / f"Waardelijsten BRO {namespace}.xlsx"
         )
 
     with category_filename.open("rb") as fid:
@@ -140,7 +168,7 @@ def read_excel_waardelijsten(
 
     d = dict()
     for sheetname, sheet in category_df_sheets.items():
-        d[sheetname] = list(sheet["Codes"][1:].values)
+        d[namespace + sheetname] = list(sheet["Codes"][1:].values)
 
     return d
 
@@ -150,8 +178,8 @@ def category_dict_to_pydantic_enum(df: dict[str, list[str]]) -> dict[str, Enum]:
         key for key in df.keys() if key.lower() not in ["[afgeleid]", "[janeeonbekend]"]
     ]
     enums = {}
-    schema = read_excel_schema()
-    sam = source_attribute_map(schema)
+    # schema = read_excel_schema()
+    # sam = source_attribute_map(schema)
     for key in keys:
         enum = Enum(
             key,
@@ -162,12 +190,14 @@ def category_dict_to_pydantic_enum(df: dict[str, list[str]]) -> dict[str, Enum]:
                 and value != "Geel gearceerd = 'Waarde alleen IMBRO/A'"
             },
         )
-        if key in sam:
-            enums[sam[key]] = enum
-    del enums["Afgeleid"]
-    del enums["CRS"]
-    del enums["EventName"]
-    del enums["BROID"]
+        # if key in sam:
+        #    enums[sam[key]] = enum
+        # else:
+        enums[key] = enum
+    # del enums["Afgeleid"]
+    # del enums["CRS"]
+    # del enums["EventName"]
+    # del enums["BROID"]
     return enums
 
 
@@ -196,29 +226,46 @@ def category_dataframe_to_pydantic_enum(df: DataFrame) -> dict[str, Enum]:
 def generate_pydantic_enums(enums: dict[str, Enum], target_file: Path):
     logger = logging.getLogger(__name__)
     logger.warning(f"Writing enums to {target_file}")
+    key_translation = str.maketrans(
+        {".": "_", ":": "_", "-": "_", "+": "_", " ": "_", "/": "_"}
+    )
     with target_file.open("wt") as fid:
+        fid.write("# flake8: noqa\n")
         fid.write("from enum import Enum\n")
 
         for k, v in enums.items():
+            if len(v) == 0:
+                continue
             fid.write(f"\n\nclass {k}Enum(str, Enum):\n")
             for field in v:
-                fid.write(f'    {field.value} = "{field.value}"\n')
+                fid.write(
+                    f'    {field.value.translate(key_translation)} = "{field.value}"\n'
+                )
+            if "onbekend" in v._member_names_:
+                fid.write("\n    @classmethod\n")
+                fid.write("    def _missing_(cls, value):\n")
+                fid.write("        return cls.onbekend\n")
 
 
 def generate_pydantic_schemas(
-    df_schema: DataFrame,
+    df_schema: DataFrame | list[DataFrame],
     enums: dict[str, Enum],
     target_directory: Optional[Path] = None,
 ):
+    if isinstance(df_schema, DataFrame):
+        df_schema = [df_schema]
     if not target_directory:
         target_directory = Path(os.path.realpath(os.getcwd()))
 
     generate_pydantic_enums(enums=enums, target_file=target_directory / "BRONEnums.py")
-    ps = _excel_schema_to_pydantic_str(df_schema, enums)
-    enum_list_str = [key + "Enum" for key, _ in enums.items()]
+    ps = {}
+    for df in df_schema:
+        ps = {**ps, **_excel_schema_to_pydantic_str(df, enums)}
+    enum_list_str = [key + "Enum" for key, v in enums.items() if len(v) > 0]
     enum_list_str.sort()
     import_enum_str = ",\n    ".join(enum_list_str)
     with (target_directory / "BRONTypes.py").open("wt") as fid:
+        fid.write("# flake8: noqa\n")
         fid.write("from typing import Optional, Any\n\n")
         fid.write("from rws_bron.schema.matlabbasemodel import MatlabBaseModel\n\n")
         fid.write(f"from .BRONEnums import (\n    {import_enum_str},\n)\n")

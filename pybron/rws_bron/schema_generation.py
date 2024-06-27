@@ -21,7 +21,12 @@ from rws_bron.schema.excel_shema import (
 
 
 def generate_schemas(target_directory: Optional[Path] = None):
-    df_schema = read_excel_schema()
+    df_schema = [
+        read_excel_schema(),
+        read_excel_schema(namespace="GLD"),
+        read_excel_schema(namespace="GMN"),
+    ]
+
     df_cat = read_excel_waardelijsten()
     enums = category_dict_to_pydantic_enum(df_cat)
     generate_pydantic_schemas(df_schema, enums, target_directory)

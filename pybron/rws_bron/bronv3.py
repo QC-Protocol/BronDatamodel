@@ -16,7 +16,7 @@ from typing import Any
 import numpy as np
 import scipy.io as spio
 
-from rws_bron.schema.BRON import GMW
+from rws_bron.schema.BRON import GLD, GMN, GMW
 from rws_bron.schema.matlabbasemodel import datetime2matlab
 
 
@@ -90,6 +90,8 @@ def loadmat(filename):
 def loadbronv3(filename: Path) -> dict[str, list[dict]]:
     data_py = loadmat(filename)
     data_py["GMW"] = [GMW.from_dict(gmw) for gmw in data_py["GMW"]]
+    data_py["GMN"] = [GMN.from_dict(gmn) for gmn in data_py["GMN"]]
+    data_py["GLD"] = [GLD.from_dict(gld) for gld in data_py["GLD"]]
     return data_py
 
 

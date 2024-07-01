@@ -63,7 +63,7 @@ categorical_map = {
     # "WellStability": "str",
     "LoggerBrand": "str",
     "LoggerType": "str",
-    "QualityRegime": "int",
+    "QualityRegime": "str",
     "ObjRgstrDateTime": "float",
     "EventName": "Any",
     "RefLevel": "Any",

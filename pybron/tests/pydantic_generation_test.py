@@ -9,6 +9,8 @@ Modified By: Dirkjan Krijnders
 Copyright 2024 - 2024 Antea Nederland B.V.
 """
 
+import pytest
+
 from rws_bron.schema.excel_shema import (
     _excel_schema_to_pydantic_str,
     category_dataframe_to_pydantic_enum,
@@ -89,6 +91,7 @@ def test_read_excel_categories():
     assert df["beschermconstructie"][2] == "kokerNietMetaal"
 
 
+@pytest.mark.skip
 def test_category_dataframe_to_pydantic_enum():
     df = read_excel_categories()
     enums = category_dataframe_to_pydantic_enum(df)

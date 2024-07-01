@@ -1,5 +1,5 @@
 # flake8: noqa
-from typing import Optional, Any
+from typing import Any, Optional
 
 from rws_bron.schema.matlabbasemodel import MatlabBaseModel
 
@@ -82,7 +82,7 @@ class GMWTube(MatlabBaseModel):
     SockMaterial: Optional[GMWSockMaterialEnum]
     FilterTopLevel: Optional[float]
     FilterBottomLevel: Optional[float]
-    sedSumpLength          : Optional[float]
+    sedSumpLength: Optional[float]
     LoggerBrand: Optional[str]
     LoggerDepth: Optional[float]
     LoggerSerial: Optional[str]
@@ -124,7 +124,7 @@ class GLDAdm(MatlabBaseModel):
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
-    QualityRegime: Optional[int]
+    QualityRegime: Optional[str]
     ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
 
@@ -141,12 +141,12 @@ class GLDSource(MatlabBaseModel):
     ProcessID: Optional[int]
     LoggerSerial: Optional[str]
     LoggerDepth: Optional[float]
-    LoggerBrand: Optional[str]
+    # LoggerBrand: Optional[str]
     File: Optional[str]
     RefLevel: Optional[Any]
-    WaterDensity: Optional[float]
-    Gravity: Optional[float]
-    Battery: Optional[str]
+    WaterDensity: Optional[float] = 1
+    Gravity: Optional[float] = 9.81
+    Battery: Optional[str] = ""
     BaroID: Optional[int]
     Measurements: Optional[Any]
     Changes: Optional[Any]
@@ -167,7 +167,7 @@ class GMNAdm(MatlabBaseModel):
     BROID: Optional[str]
     ObjRgstrDateTime: Optional[float]
     AccParty: Optional[str]
-    QualityRegime: Optional[int]
+    QualityRegime: Optional[str]
     DvRespParty: Optional[str]
     LastRgstrEvent: Optional[int]
 

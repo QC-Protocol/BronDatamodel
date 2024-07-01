@@ -96,8 +96,12 @@ def loadbronv3(filename: Path) -> dict[str, list[dict]]:
 
 
 def savebronv3(filename: Path, data: dict[str, list[dict]]):
+    g = [gmw.as_matlab_dict() for gmw in data["GMW"]]
+    print(g)
     data_write: dict[str, list[dict[str, Any]]] = {
         "GMW": [gmw.as_matlab_dict() for gmw in data["GMW"]],
+        "GMN": [gmn.as_matlab_dict() for gmn in data["GMN"]],
+        "GLD": [gld.as_matlab_dict() for gld in data["GLD"]],
         "File": {
             "Name": filename.name,
             "Model": {

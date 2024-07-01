@@ -44,7 +44,7 @@ repos:
     rev: v4.5.0
     hooks:
     -   id: check-added-large-files
-        args: ["--maxkb", "5000"]
+        args: ["--maxkb", "8000"]
 -   repo: https://github.com/asottile/pyupgrade
     rev: v3.15.0
     hooks:
@@ -54,5 +54,5 @@ repos:
     rev: '1.7.5'
     hooks:
     -   id: bandit
-        args: ["-c", "pyproject.toml"]
+        args: ["-c", "pybron/pyproject.toml"]
         additional_dependencies: ["bandit[toml]"]

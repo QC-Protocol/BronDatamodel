@@ -57,7 +57,7 @@ def testdata_filename_bronv3() -> Path:
     return (
         Path(os.path.dirname(os.path.realpath(__file__)))
         / "data"
-        / "2024-06-27 Testdata Provincie Utrecht (export).bron2"
+        / "2024-07-01 Testdata Provincie Utrecht (export).bron2"
     )
 
 
@@ -66,13 +66,13 @@ def testdata_filename_bronv3_write() -> Path:
     return (
         Path(os.path.dirname(os.path.realpath(__file__)))
         / "data"
-        / "2024-05-21 Testdata Provincie Utrecht (export, v7.3).bron"
+        / "2024-07-01 Testdata Provincie Utrecht write-test.bron2"
     )
 
 
 def test_bronv3_read(testdata_filename_bronv3: Path):
     data = loadbronv3(testdata_filename_bronv3)
-    assert data["GMW"][0].adm[0].BROID == "GMW000000042649"
+    assert data["GMW"][0].adm.BROID == "GMW000000042649"
     assert data["GMW"][0].well.XCoordinate == 157495.0
     assert isinstance(data["GMW"][0].well, GMWWell)
 
@@ -85,6 +85,15 @@ def test_bronv3_write(
     data_to_verify = loadbronv3(testdata_filename_bronv3_write)
     assert data["GMW"][0].well.NITGCode == data_to_verify["GMW"][0].well.NITGCode
     # assert data["GMW"][0].adm[0].bla == data_to_verify["GMW"][0].well.NITGCode
+    for ii_gmw, _ in enumerate(data["GMW"]):
+        if isinstance(data["GMW"][ii_gmw].tube, list):
+            for ii_tube, _ in enumerate(data["GMW"][ii_gmw].tube):
+                assert (
+                    data["GMW"][ii_gmw].tube[ii_tube]
+                    == data_to_verify["GMW"][ii_gmw].tube[ii_tube]
+                )
+        else:
+            assert data["GMW"][ii_gmw].tube == data_to_verify["GMW"][ii_gmw].tube
 
 
 @pytest.fixture
@@ -111,13 +120,27 @@ def well_data() -> dict[str, Any]:
     }
 
 
+@pytest.fixture
+def adm_data() -> dict[str, Any]:
+    return {
+        "WellID": 0,
+        "BROID": "BROID",
+        "AccParty": "AccParty",
+        "DvRespParty": "dv",
+        "QualityRegime": 2,
+        "ObjRgstrDateTime": 123.4,
+        "LastRgstrEvent": 12,
+        "WellCode": "sdaf",
+    }
+
+
 def test_well(renew_schemas, well_data):
     w = GMWWell(**well_data)
 
     assert w
 
 
-def test_GMW(well_data):
-    gmw = GMW.from_dict({"Well": well_data, "Tube": [], "History": [], "Adm": []})
+def test_GMW(well_data, adm_data):
+    gmw = GMW.from_dict({"Well": well_data, "Tube": [], "History": [], "Adm": adm_data})
     assert gmw.well.Name == "text"
     assert GMW.model_validate(gmw)

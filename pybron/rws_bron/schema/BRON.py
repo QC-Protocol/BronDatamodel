@@ -30,12 +30,17 @@ class GMW(MatlabBaseModel):
     well: GMWWell
     tube: list[GMWTube]
     history: list[GMWHistory]
-    adm: list[GMWAdm]
+    adm: GMWAdm
 
     @classmethod
     def from_dict(cls, d: dict):
         gmw = cls(
-            **{"well": GMWWell(**d["Well"]), "tube": [], "history": [], "adm": []}
+            **{
+                "well": GMWWell(**d["Well"]),
+                "tube": [],
+                "history": [],
+                "adm": GMWAdm(**d["Adm"]),
+            }
         )
         if isinstance(d["Tube"], list):
             for tube in d["Tube"]:
@@ -47,11 +52,6 @@ class GMW(MatlabBaseModel):
                 gmw.history.append(GMWHistory(**history))
         else:
             gmw.history.append(GMWHistory(**d["History"]))
-        if isinstance(d["Adm"], list):
-            for adm in d["Adm"]:
-                gmw.adm.append(GMWAdm(**adm))
-        else:
-            gmw.adm.append(GMWAdm(**d["Adm"]))
         return gmw
 
 
@@ -71,6 +71,12 @@ class GLD(MatlabBaseModel):
                 "history": [],
             }
         )
+        if isinstance(d["Adm"], list):
+            for adm in d["adm"]:
+                gld.adm.append(GLDAdm(**adm))
+        else:
+            gld.adm.append(GLDAdm(**d["Adm"]))
+
         if isinstance(d["Dossier"], list):
             for dossier in d["Dossier"]:
                 gld.dossier.append(GLDDossier(**dossier))
@@ -81,11 +87,11 @@ class GLD(MatlabBaseModel):
                 gld.history.append(GLDHistory(**history))
         else:
             gld.history.append(GLDHistory(**d["History"]))
-        # if isinstance(d["Adm"], list):
-        #     for adm in d["Adm"]:
-        #         gld.adm.append(GLDAdm(**adm))
-        # else:
-        #     gld.adm.append(GLDAdm(**d["Adm"]))
+        if isinstance(d["Source"], list):
+            for source in d["Source"]:
+                gld.source.append(GLDSource(**source))
+        else:
+            gld.source.append(GLDSource(**d["Source"]))
 
         return gld
 

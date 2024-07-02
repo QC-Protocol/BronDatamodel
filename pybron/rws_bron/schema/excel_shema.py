@@ -67,6 +67,7 @@ categorical_map = {
     "ObjRgstrDateTime": "float",
     "EventName": "Any",
     "RefLevel": "Any",
+    "Battery": "float",
 }
 
 
@@ -91,7 +92,7 @@ def source_attribute_map(schema: DataFrame) -> dict[str, str]:
 
 def _excel_schema_to_pydantic_str(
     schema: DataFrame, enums: dict[str, Enum]
-) -> dict[str, dict[str, str]]:
+) -> dict[str, dict[str, dict[str, str]]]:
     sam = source_attribute_map(schema)
     classes: list[str] = [c for c in schema["TargetEntity"].unique() if c != "Afgeleid"]
     r: dict[str, dict[str, str]] = {}
@@ -100,29 +101,53 @@ def _excel_schema_to_pydantic_str(
             continue
         r[schema.namespace + c] = {}
         attrs = (
-            schema[["TargetAttributeEng", "TargetDatatype"]]
+            schema[["TargetAttributeEng", "TargetDatatype", "SourceMin", "SourceMax"]]
             .where(schema["TargetEntity"] == c)
             .dropna()
             .set_index("TargetAttributeEng")
         )
         for attr, datatype in attrs.iterrows():
-            datatype_py = datatype
-            datatype_name = datatype.values[0]
+            datatype_py = datatype["TargetDatatype"]
+            datatype_name = datatype["TargetDatatype"]
             if datatype_name == "[Categorical]":
                 if attr in categorical_map:
-                    datatype_py = categorical_map[attr]
+                    datatype_py = {
+                        "type": categorical_map[attr],
+                        "cardinality": [
+                            datatype["SourceMin"],
+                            datatype["SourceMax"],
+                        ],
+                    }
                 else:
                     if datatype.name == "BROID":
                         pass
                     if datatype.name in sam:
-                        datatype_py = schema.namespace + sam[datatype.name] + "Enum"
+                        datatype_py = {
+                            "type": schema.namespace + sam[datatype.name] + "Enum",
+                            "cardinality": [
+                                datatype["SourceMin"],
+                                datatype["SourceMax"],
+                            ],
+                        }
                     else:
-                        datatype_py = schema.namespace + datatype.name + "Enum"
+                        datatype_py = {
+                            "type": schema.namespace + datatype.name + "Enum",
+                            "cardinality": [
+                                datatype["SourceMin"],
+                                datatype["SourceMax"],
+                            ],
+                        }
             else:
                 if datatype_name in datatype_map:
-                    datatype_py = datatype_map[datatype_name]
+                    datatype_py = {
+                        "type": datatype_map[datatype_name],
+                        "cardinality": [datatype["SourceMin"], datatype["SourceMax"]],
+                    }
                 else:
-                    datatype_py = "str"
+                    datatype_py = {
+                        "type": "str",
+                        "cardinality": [datatype["SourceMin"], datatype["SourceMax"]],
+                    }
             r[schema.namespace + c][attr] = datatype_py
 
     return r
@@ -251,6 +276,7 @@ def generate_pydantic_schemas(
     df_schema: DataFrame | list[DataFrame],
     enums: dict[str, Enum],
     target_directory: Optional[Path] = None,
+    use_source_cardinality: Optional[bool] = False,
 ):
     if isinstance(df_schema, DataFrame):
         df_schema = [df_schema]
@@ -266,10 +292,17 @@ def generate_pydantic_schemas(
     import_enum_str = ",\n    ".join(enum_list_str)
     with (target_directory / "BRONTypes.py").open("wt") as fid:
         fid.write("# flake8: noqa\n")
-        fid.write("from typing import Optional, Any\n\n")
+        fid.write("from typing import Any, Optional\n\n")
         fid.write("from rws_bron.schema.matlabbasemodel import MatlabBaseModel\n\n")
         fid.write(f"from .BRONEnums import (\n    {import_enum_str},\n)\n")
         for k, v in ps.items():
             fid.write(f"\n\nclass {k}(MatlabBaseModel):\n")
             for k2, v2 in v.items():
-                fid.write(f"    {k2}: Optional[{v2}]\n")
+                if (
+                    use_source_cardinality
+                    and isinstance(v2["cardinality"][0], int)
+                    and v2["cardinality"][0] > 0
+                ):
+                    fid.write(f"    {k2}: {v2['type']}\n")
+                else:
+                    fid.write(f"    {k2}: Optional[{v2['type']}]\n")

@@ -16,7 +16,7 @@ from typing import Any
 import numpy as np
 import scipy.io as spio
 
-from rws_bron.schema.BRON import GLD, GMN, GMW
+from rws_bron.schema.BRON import BRON, GLD, GMN, GMW
 from rws_bron.schema.matlabbasemodel import datetime2matlab
 
 
@@ -87,21 +87,21 @@ def loadmat(filename):
     return _check_keys(data)
 
 
-def loadbronv3(filename: Path) -> dict[str, list[dict]]:
+def loadbronv3(filename: Path) -> BRON:  # dict[str, list[MatlabBaseModel]]:
     data_py = loadmat(filename)
     data_py["GMW"] = [GMW.from_dict(gmw) for gmw in data_py["GMW"]]
     data_py["GMN"] = [GMN.from_dict(gmn) for gmn in data_py["GMN"]]
     data_py["GLD"] = [GLD.from_dict(gld) for gld in data_py["GLD"]]
-    return data_py
+    return BRON(**data_py)
 
 
-def savebronv3(filename: Path, data: dict[str, list[dict]]):
-    g = [gmw.as_matlab_dict() for gmw in data["GMW"]]
+def savebronv3(filename: Path, data: BRON):
+    g = [gmw.as_matlab_dict() for gmw in data.GMW]
     print(g)
     data_write: dict[str, list[dict[str, Any]]] = {
-        "GMW": [gmw.as_matlab_dict() for gmw in data["GMW"]],
-        "GMN": [gmn.as_matlab_dict() for gmn in data["GMN"]],
-        "GLD": [gld.as_matlab_dict() for gld in data["GLD"]],
+        "GMW": [gmw.as_matlab_dict() for gmw in data.GMW],
+        "GMN": [gmn.as_matlab_dict() for gmn in data.GMN],
+        "GLD": [gld.as_matlab_dict() for gld in data.GLD],
         "File": {
             "Name": filename.name,
             "Model": {

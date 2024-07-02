@@ -106,3 +106,9 @@ class GMN(MatlabBaseModel):
     def from_dict(cls, d: dict):
         gmn = cls(**{"adm": GMNAdm(**d["Adm"]), "net": [], "history": [], "point": []})
         return gmn
+
+
+class BRON(MatlabBaseModel):
+    GMW: list[GMW]
+    GMN: list[GMN]
+    GLD: list[GLD]

@@ -17,7 +17,7 @@ import pytest
 
 from rws_bron.bronv3 import loadbronv3, savebronv3
 from rws_bron.schema.BRON import GMW
-from rws_bron.schema.BRONTypes import GMWWell
+from rws_bron.schema.BRONTypes import GMWTube, GMWWell
 from rws_bron.schema_generation import generate_schemas
 
 # from scipy.io import loadmat
@@ -72,9 +72,13 @@ def testdata_filename_bronv3_write() -> Path:
 
 def test_bronv3_read(testdata_filename_bronv3: Path):
     data = loadbronv3(testdata_filename_bronv3)
-    assert data["GMW"][0].adm.BROID == "GMW000000042649"
-    assert data["GMW"][0].well.XCoordinate == 157495.0
-    assert isinstance(data["GMW"][0].well, GMWWell)
+    assert data.GMW[0].adm.BROID == "GMW000000042649"
+    assert data.GMW[0].well.XCoordinate == 157495.0
+    assert isinstance(data.GMW[0].well, GMWWell)
+    for well in data.GMW:
+        for ii_tube, _ in enumerate(well.tube):
+            tube: GMWTube = well.tube[ii_tube]
+            assert isinstance(tube.IsVarTubeDiam, float) or tube.IsVarTubeDiam is None
 
 
 def test_bronv3_write(
@@ -83,17 +87,17 @@ def test_bronv3_write(
     data = loadbronv3(testdata_filename_bronv3)
     savebronv3(testdata_filename_bronv3_write, data)
     data_to_verify = loadbronv3(testdata_filename_bronv3_write)
-    assert data["GMW"][0].well.NITGCode == data_to_verify["GMW"][0].well.NITGCode
+    assert data.GMW[0].well.NITGCode == data_to_verify.GMW[0].well.NITGCode
     # assert data["GMW"][0].adm[0].bla == data_to_verify["GMW"][0].well.NITGCode
-    for ii_gmw, _ in enumerate(data["GMW"]):
-        if isinstance(data["GMW"][ii_gmw].tube, list):
-            for ii_tube, _ in enumerate(data["GMW"][ii_gmw].tube):
+    for ii_gmw, _ in enumerate(data.GMW):
+        if isinstance(data.GMW[ii_gmw].tube, list):
+            for ii_tube, _ in enumerate(data.GMW[ii_gmw].tube):
                 assert (
-                    data["GMW"][ii_gmw].tube[ii_tube]
-                    == data_to_verify["GMW"][ii_gmw].tube[ii_tube]
+                    data.GMW[ii_gmw].tube[ii_tube]
+                    == data_to_verify.GMW[ii_gmw].tube[ii_tube]
                 )
         else:
-            assert data["GMW"][ii_gmw].tube == data_to_verify["GMW"][ii_gmw].tube
+            assert data.GMW[ii_gmw].tube == data_to_verify.GMW[ii_gmw].tube
 
 
 @pytest.fixture

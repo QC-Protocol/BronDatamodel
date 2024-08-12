@@ -293,7 +293,7 @@ def generate_pydantic_schemas(
     with (target_directory / "BRONTypes.py").open("wt") as fid:
         fid.write("# flake8: noqa\n")
         fid.write("from typing import Any, Optional\n\n")
-        fid.write("from rws_bron.schema.matlabbasemodel import MatlabBaseModel\n\n")
+        fid.write("from pybron.schema.matlabbasemodel import MatlabBaseModel\n\n")
         fid.write(f"from .BRONEnums import (\n    {import_enum_str},\n)\n")
         for k, v in ps.items():
             fid.write(f"\n\nclass {k}(MatlabBaseModel):\n")

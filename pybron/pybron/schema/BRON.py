@@ -9,7 +9,7 @@ Modified By: Dirkjan Krijnders
 Copyright 2024 - 2024 Antea Nederland B.V.
 """
 
-from rws_bron.schema.BRONTypes import (
+from pybron.schema.BRONTypes import (
     GLDAdm,
     GLDDossier,
     GLDHistory,
@@ -23,7 +23,7 @@ from rws_bron.schema.BRONTypes import (
     GMWTube,
     GMWWell,
 )
-from rws_bron.schema.matlabbasemodel import MatlabBaseModel
+from pybron.schema.matlabbasemodel import MatlabBaseModel
 
 
 class GMW(MatlabBaseModel):

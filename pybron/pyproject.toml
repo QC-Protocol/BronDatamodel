@@ -3,15 +3,15 @@ requires = ["setuptools>=65", "wheel", "setuptools_scm>=6.2"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "rws_bron"
+name = "pybron"
 version = "0.0.1"
 dependencies = ["click", "scipy", "pydantic", "pandas", "openpyxl"]
 
 [tool.setuptools.packages.find]
-include = ["rws_bron"]
+include = ["pybron"]
 
 [project.scripts]
-generate_bron_schemas = "rws_bron.bin.generate_pydantic_schemas:main"
+generate_bron_schemas = "pybron.bin.generate_pydantic_schemas:main"
 
 [project.optional-dependencies]
 dev = [

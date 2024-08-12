@@ -14,7 +14,7 @@ from typing import Optional
 
 import click
 
-from rws_bron.schema_generation import generate_schemas
+from pybron.schema_generation import generate_schemas
 
 
 @click.command

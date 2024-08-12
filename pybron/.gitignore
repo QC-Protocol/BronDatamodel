@@ -109,7 +109,7 @@ venv.bak/
 
 openid-config.json
 */openid-config.json
-rws_bron/_version.py
+pybron/_version.py
 BRONEnums.py
 BRONTypes.py
 .vscode/settings.json

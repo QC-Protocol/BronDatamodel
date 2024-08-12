@@ -11,7 +11,7 @@ Copyright 2024 - 2024 Antea Nederland B.V.
 
 import pytest
 
-from rws_bron.schema.excel_shema import (
+from pybron.schema.excel_shema import (
     _excel_schema_to_pydantic_str,
     category_dataframe_to_pydantic_enum,
     category_dict_to_pydantic_enum,

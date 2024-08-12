@@ -12,7 +12,7 @@ Copyright 2024 - 2024 Antea Nederland B.V.
 from pathlib import Path
 from typing import Optional
 
-from rws_bron.schema.excel_shema import (
+from pybron.schema.excel_shema import (
     category_dict_to_pydantic_enum,
     generate_pydantic_schemas,
     read_excel_schema,

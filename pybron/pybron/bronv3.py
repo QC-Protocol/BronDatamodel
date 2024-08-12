@@ -16,8 +16,8 @@ from typing import Any
 import numpy as np
 import scipy.io as spio
 
-from rws_bron.schema.BRON import BRON, GLD, GMN, GMW
-from rws_bron.schema.matlabbasemodel import datetime2matlab
+from pybron.schema.BRON import BRON, GLD, GMN, GMW
+from pybron.schema.matlabbasemodel import datetime2matlab
 
 
 def replace_empty(d: dict) -> dict:

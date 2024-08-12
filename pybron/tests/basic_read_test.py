@@ -15,10 +15,10 @@ from typing import Any
 
 import pytest
 
-from rws_bron.bronv3 import loadbronv3, savebronv3
-from rws_bron.schema.BRON import GMW
-from rws_bron.schema.BRONTypes import GMWTube, GMWWell
-from rws_bron.schema_generation import generate_schemas
+from pybron.bronv3 import loadbronv3, savebronv3
+from pybron.schema.BRON import GMW
+from pybron.schema.BRONTypes import GMWTube, GMWWell
+from pybron.schema_generation import generate_schemas
 
 # from scipy.io import loadmat
 # from mat4py import loadmat
@@ -29,7 +29,7 @@ def renew_schemas():
     generate_schemas(
         target_directory=Path(os.path.dirname(os.path.realpath(__file__)))
         / ".."
-        / "rws_bron"
+        / "pybron"
         / "schema"
     )
 

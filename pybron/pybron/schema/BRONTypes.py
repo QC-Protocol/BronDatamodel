@@ -1,7 +1,7 @@
 # flake8: noqa
 from typing import Any, Optional
 
-from rws_bron.schema.matlabbasemodel import MatlabBaseModel
+from pybron.schema.matlabbasemodel import MatlabBaseModel
 
 from .BRONEnums import (
     GARAnalyticalTechniqueEnum,

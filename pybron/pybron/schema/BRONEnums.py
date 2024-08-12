@@ -294,8 +294,12 @@ class GMNMonitoringPurposeEnum(str, Enum):
     strategischBeheerKwaliteitRegionaal = "strategischBeheerKwaliteitRegionaal"
     strategischBeheerKwantiteitLandelijk = "strategischBeheerKwantiteitLandelijk"
     strategischBeheerKwantiteitRegionaal = "strategischBeheerKwantiteitRegionaal"
-    veiligstellingDrinkwatervoorzieningKwaliteit = "veiligstellingDrinkwatervoorzieningKwaliteit"
-    veiligstellingDrinkwatervoorzieningKwantiteit = "veiligstellingDrinkwatervoorzieningKwantiteit"
+    veiligstellingDrinkwatervoorzieningKwaliteit = (
+        "veiligstellingDrinkwatervoorzieningKwaliteit"
+    )
+    veiligstellingDrinkwatervoorzieningKwantiteit = (
+        "veiligstellingDrinkwatervoorzieningKwantiteit"
+    )
     veiligstellingGrondwaterKwaliteit = "veiligstellingGrondwaterKwaliteit"
     veiligstellingGrondwaterKwantiteit = "veiligstellingGrondwaterKwantiteit"
     waterstaatkundigeVerzorgingKwaliteit = "waterstaatkundigeVerzorgingKwaliteit"
@@ -418,7 +422,9 @@ class GLDInterpolationTypeEnum(str, Enum):
 
 
 class GLDEvaluationProcedureEnum(str, Enum):
-    PMBProtocolDatakwaliteitscontroleQC2018v2_0 = "PMBProtocolDatakwaliteitscontroleQC2018v2.0"
+    PMBProtocolDatakwaliteitscontroleQC2018v2_0 = (
+        "PMBProtocolDatakwaliteitscontroleQC2018v2.0"
+    )
     RWSAATGrondwaterv1_0 = "RWSAATGrondwaterv1.0"
     brabantWater2013 = "brabantWater2013"
     eijkelkampDataValidatiev0_0_9 = "eijkelkampDataValidatiev0.0.9"
@@ -426,7 +432,9 @@ class GLDEvaluationProcedureEnum(str, Enum):
     oordeelDeskundige = "oordeelDeskundige"
     validatieprocedureEvidesWaterbedrijf = "validatieprocedureEvidesWaterbedrijf"
     vitensBeoordelingsprotocolGrondwater = "vitensBeoordelingsprotocolGrondwater"
-    warecoWaterDataValidatieProtocolv20200219 = "warecoWaterDataValidatieProtocolv20200219"
+    warecoWaterDataValidatieProtocolv20200219 = (
+        "warecoWaterDataValidatieProtocolv20200219"
+    )
     waternetBeoordelingsprocedure = "waternetBeoordelingsprocedure"
 
     @classmethod

@@ -99,8 +99,8 @@ class GLD(MatlabBaseModel):
 class GMN(MatlabBaseModel):
     adm: GMNAdm
     net: GMNNet
-    point: GMNPoint
-    history: GMNHistory
+    point: list[GMNPoint]
+    history: list[GMNHistory] | None
 
     @classmethod
     def from_dict(cls, d: dict):

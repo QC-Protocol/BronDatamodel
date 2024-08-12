@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+        "ms-python.black-formatter",
+        "ms-python.isort",
+        "ms-python.mypy-type-checker",
+        "ms-python.python",
+        "psioniq.psi-header",
+        "esbenp.prettier-vscode",
+        "njpwerner.autodocstring"
+    ]
+}

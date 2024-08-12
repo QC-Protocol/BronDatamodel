@@ -1,0 +1,41 @@
+{
+  "python.testing.pytestArgs": ["."],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true,
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "files.trimTrailingWhitespace": true,
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "isort.args": ["--profile", "black"],
+  "psi-header.variables": [["projectCreationYear", "2024"]],
+  "psi-header.config": {
+    "forceToTop": true,
+    "company": "Antea Nederland B.V."
+  },
+  "psi-header.changes-tracking": { "autoHeader": "autoSave" },
+  "psi-header.templates": [
+    {
+      "language": "*",
+      "template": [
+        "Created on : <<filecreated('dddd, Do MMMM YYYY h:mm:ss a')>>",
+        "Author: <<author>>",
+        "Script type: A Eigen gebruik, B script, C tool, D complexe tool (lijstje uit ander document)",
+        "-----",
+        "Last Modified: <<dateformat('dddd, Do MMMM YYYY h:mm:ss a')>>",
+        "Modified By: <<author>>",
+        "-----",
+        "Copyright <<projectCreationYear>> - <<year>> <<company>>"
+      ]
+    }
+  ]
+}

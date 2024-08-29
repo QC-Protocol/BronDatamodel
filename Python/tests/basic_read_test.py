@@ -9,6 +9,7 @@ Modified By: Dirkjan Krijnders
 Copyright 2024 - 2024 Antea Nederland B.V.
 """
 
+from math import isnan
 import os
 from pathlib import Path
 from typing import Any
@@ -77,6 +78,7 @@ def test_bronv3_read(testdata_filename_bronv3: Path):
     assert data.GMW[0].adm.BROID == "GMW000000042649"
     assert data.GMW[0].well.XCoordinate == 157495.0
     assert isinstance(data.GMW[0].well, GMWWell)
+    assert isnan(data.GMW[0].tube[0].LoggerDepth)
     for well in data.GMW:
         for ii_tube, _ in enumerate(well.tube):
             tube: GMWTube = well.tube[ii_tube]
@@ -90,6 +92,7 @@ def test_bronv3_write(
     savebronv3(testdata_filename_bronv3_write, data)
     data_to_verify = loadbronv3(testdata_filename_bronv3_write)
     assert data.GMW[0].well.NITGCode == data_to_verify.GMW[0].well.NITGCode
+    assert isnan(data.GMW[0].tube[0].LoggerDepth)
     # assert data["GMW"][0].adm[0].bla == data_to_verify["GMW"][0].well.NITGCode
     for ii_gmw, _ in enumerate(data.GMW):
         if isinstance(data.GMW[ii_gmw].tube, list):
@@ -140,6 +143,31 @@ def adm_data() -> dict[str, Any]:
         "GMWID": 0
     }
 
+@pytest.fixture
+def tube_data() -> dict[str, Any]:
+    return {
+        "GMWID": 0,
+        "TubeNo": 1,
+        "Type": "",
+        "ArtesianWellCapPresent": float('nan'),
+        "TubeDiameter": 1,
+        "IsVarTubeDiam": False,
+        "Status": "",
+        "TopLevel": 1,
+        "VertPosMethodTop": "",
+        "PackingMaterial": "",
+        "Glue": "",
+        "Material": "",
+        "SockMaterial": "",
+        "FilterTopLevel":  1,
+        "FilterBottomLevel": 2,
+        "sedSumpLength": 2,
+        "LoggerBrand": "",
+        "LoggerSerial": "",
+        "LoggerType": "",
+        "GLDID": 1,
+    }
+
 
 def test_well(renew_schemas, well_data):
     w = GMWWell(**well_data)
@@ -151,3 +179,11 @@ def test_GMW(well_data, adm_data):
     gmw = GMW.from_dict({"Well": well_data, "Tube": [], "History": [], "Adm": adm_data})
     assert gmw.well.Name == "text"
     assert GMW.model_validate(gmw)
+
+
+def test_nan(tube_data):
+    tube = GMWTube(**tube_data)
+    assert isnan(tube.LoggerDepth)
+    assert isnan(tube.ArtesianWellCapPresent)
+    tube.ArtesianWellCapPresent = float('nan')
+    assert isnan(tube.ArtesianWellCapPresent)

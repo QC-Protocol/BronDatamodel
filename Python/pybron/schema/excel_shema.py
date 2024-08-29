@@ -49,7 +49,7 @@ datatype_map = {
     "[NITGCode]": "str",
     "[m]": "float",
     "[m+ref]": "float",
-    "[NaNBoolean]": "float",
+    "[NaNBoolean]": "bool | float",
     "[-m+topw]": "float",
     "[Table]": "Any",
     "[m3 s−2 kg−1]": "float",
@@ -292,6 +292,7 @@ def generate_pydantic_schemas(
     import_enum_str = ",\n    ".join(enum_list_str)
     with (target_directory / "BRONTypes.py").open("wt") as fid:
         fid.write("# flake8: noqa\n")
+        fid.write("# This file is generated, do not change\n")
         fid.write("from typing import Any, Optional\n\n")
         fid.write("from pybron.schema.matlabbasemodel import MatlabBaseModel\n\n")
         fid.write(f"from .BRONEnums import (\n    {import_enum_str},\n)\n")

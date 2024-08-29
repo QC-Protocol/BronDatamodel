@@ -99,12 +99,12 @@ class GLD(MatlabBaseModel):
 class GMN(MatlabBaseModel):
     adm: GMNAdm
     net: GMNNet
-    point: GMNPoint
-    history: GMNHistory
+    point: dict[int, GMNPoint] | None
+    history: list[GMNHistory] | None
 
     @classmethod
     def from_dict(cls, d: dict):
-        gmn = cls(**{"adm": GMNAdm(**d["Adm"]), "net": [], "history": [], "point": []})
+        gmn = cls(**{"adm": GMNAdm(**d["Adm"]), "net": [], "history": None, "point": []})
         return gmn
 
 

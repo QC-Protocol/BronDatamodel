@@ -18,15 +18,19 @@ from numpy.rec import array, fromrecords
 from pydantic import BaseModel, model_validator
 
 
-def matlab2datetime(matlab_datenum: int) -> datetime:
+def matlab2datetime(matlab_datenum: float) -> datetime:
     day = datetime.fromordinal(int(matlab_datenum))
     dayfrac = timedelta(days=matlab_datenum % 1) - timedelta(days=366)
     return day + dayfrac
 
 
-def datetime2matlab(dt: datetime) -> int:
-    #     ordinal = datetime.toordinal(dt)
-    return 70000
+def datetime2matlab(dt: datetime) -> float:
+    mdn = dt + timedelta(days=366)
+    frac_seconds = (dt - datetime(dt.year, dt.month, dt.day, 0, 0, 0)).seconds / (
+        24.0 * 60.0 * 60.0
+    )
+    frac_microseconds = dt.microsecond / (24.0 * 60.0 * 60.0 * 1000000.0)
+    return mdn.toordinal() + frac_seconds + frac_microseconds
 
 
 # @dataclass

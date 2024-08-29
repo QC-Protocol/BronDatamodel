@@ -56,18 +56,17 @@ from .BRONEnums import (
 
 
 class GMWAdm(MatlabBaseModel):
-    WellID: Optional[int]
+    GMWID: Optional[int]
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
     QualityRegime: Optional[int]
     ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
-    WellCode: Optional[str]
 
 
 class GMWTube(MatlabBaseModel):
-    WellID: Optional[int]
+    GMWID: Optional[int]
     TubeNo: Optional[int]
     Type: Optional[GMWTubeTypeEnum]
     ArtesianWellCapPresent: Optional[float]
@@ -87,11 +86,11 @@ class GMWTube(MatlabBaseModel):
     LoggerDepth: Optional[float]
     LoggerSerial: Optional[str]
     LoggerType: Optional[str]
-    GLDBROID: Optional[str]
+    GLDID: Optional[int]
 
 
 class GMWHistory(MatlabBaseModel):
-    WellID: Optional[int]
+    GMWID: Optional[int]
     TubeNo: Optional[int]
     EventName: Optional[Any]
     DateTime: Optional[float]
@@ -102,13 +101,14 @@ class GMWHistory(MatlabBaseModel):
 
 class GMWWell(MatlabBaseModel):
     Name: Optional[str]
+    WellCode: Optional[str]
+    NITGCode: Optional[str]
+    Owner: Optional[str]
+    Maintainer: Optional[str]
     DeliveryContext: Optional[GMWDeliveryContextEnum]
     ConstructionStandard: Optional[GMWConstructionStandardEnum]
     InitialFunction: Optional[GMWInitialFunctionEnum]
     WellStability: Optional[GMWWellStabilityEnum]
-    NITGCode: Optional[str]
-    Owner: Optional[str]
-    Maintainer: Optional[str]
     HeadProtector: Optional[GMWWellHeadProtectorEnum]
     HorPosMethod: Optional[GMWHorizontalPositioningMethodEnum]
     SurfaceLevel: Optional[float]
@@ -121,6 +121,7 @@ class GMWWell(MatlabBaseModel):
 
 
 class GLDAdm(MatlabBaseModel):
+    GLDID: Optional[int]
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
@@ -130,11 +131,13 @@ class GLDAdm(MatlabBaseModel):
 
 
 class GLDDossier(MatlabBaseModel):
+    GMWID : Optional[int]
     GMWBROID: Optional[str]
     TubeNo: Optional[int]
 
 
 class GLDSource(MatlabBaseModel):
+    GLDID: Optional[int]
     ObservationID: Optional[str]
     IsInterim: Optional[float]
     Investigator: Optional[str]
@@ -156,20 +159,36 @@ class GLDSource(MatlabBaseModel):
 
 
 class GLDHistory(MatlabBaseModel):
+    GLDID: Optional[int]
     EventName: Optional[Any]
+    EventDate: Optional[float]
     SourceID: Optional[int]
-    eventDate: Optional[float]
     EventData: Optional[Any]
 
 
 class GMNAdm(MatlabBaseModel):
-    NetID: Optional[int]
+    GMNID: Optional[int]
     BROID: Optional[str]
-    ObjRgstrDateTime: Optional[float]
     AccParty: Optional[str]
-    QualityRegime: Optional[str]
     DvRespParty: Optional[str]
+    QualityRegime: Optional[str]
+    ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
+
+
+class GMNPoint(MatlabBaseModel):
+    GMNID: Optional[int]
+    MeasuringPointCode: Optional[str]
+    GMWBROID: Optional[str]
+    TubeNo: Optional[int]
+
+
+class GMNHistory(MatlabBaseModel):
+    GMNID: Optional[int]
+    EventName: Optional[Any]
+    EventDate: Optional[float]
+    PointID: Optional[int]
+    EventData: Optional[Any]
 
 
 class GMNNet(MatlabBaseModel):
@@ -179,16 +198,3 @@ class GMNNet(MatlabBaseModel):
     GroundwaterAspect: Optional[GMNGroundwaterAspectEnum]
     startDateMonitoring: Optional[float]
     endDateMonitoring: Optional[float]
-
-
-class GMNPoint(MatlabBaseModel):
-    MeasuringPointCode: Optional[str]
-    GMWBROID: Optional[str]
-    TubeNo: Optional[int]
-
-
-class GMNHistory(MatlabBaseModel):
-    EventName: Optional[Any]
-    EventDate: Optional[float]
-    PointID: Optional[int]
-    EventData: Optional[Any]

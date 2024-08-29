@@ -56,8 +56,10 @@ def testdata_filename_bronv2() -> Path:
 def testdata_filename_bronv3() -> Path:
     return (
         Path(os.path.dirname(os.path.realpath(__file__)))
-        / "data"
-        / "2024-07-01 Testdata Provincie Utrecht (export).bron2"
+        / ".."
+        / ".."
+        / "ExampleData"
+        / "2024-08-29 Testdata Provincie Utrecht (export).bron2"
     )
 
 
@@ -66,7 +68,7 @@ def testdata_filename_bronv3_write() -> Path:
     return (
         Path(os.path.dirname(os.path.realpath(__file__)))
         / "data"
-        / "2024-07-01 Testdata Provincie Utrecht write-test.bron2"
+        / "2024-08-29 Testdata Provincie Utrecht write-test.bron2"
     )
 
 
@@ -120,7 +122,7 @@ def well_data() -> dict[str, Any]:
         "VegType": "gras",
         "VegTypo": "bla",
         "OLGACode": "asd",
-        "WellID": 0,
+        "WellCode": "asd",
     }
 
 
@@ -135,6 +137,7 @@ def adm_data() -> dict[str, Any]:
         "ObjRgstrDateTime": 123.4,
         "LastRgstrEvent": 12,
         "WellCode": "sdaf",
+        "GMWID": 0
     }
 
 

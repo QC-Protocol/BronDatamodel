@@ -1,9 +1,11 @@
 # flake8: noqa
+# This file is generated, do not change
 from typing import Any, Optional
 
 from pybron.schema.matlabbasemodel import MatlabBaseModel
 
 from .BRONEnums import (
+    COMQualityRegimeEnum,
     GARAnalyticalTechniqueEnum,
     GARColourEnum,
     GARColourStrengthEnum,
@@ -69,9 +71,9 @@ class GMWTube(MatlabBaseModel):
     GMWID: Optional[int]
     TubeNo: Optional[int]
     Type: Optional[GMWTubeTypeEnum]
-    ArtesianWellCapPresent: Optional[float]
+    ArtesianWellCapPresent: Optional[bool | float]
     TubeDiameter: Optional[float]
-    IsVarTubeDiam: Optional[float]
+    IsVarTubeDiam: Optional[bool | float]
     Status: Optional[GMWTubeStatusEnum]
     TopLevel: Optional[float]
     VertPosMethodTop: Optional[GMWTubeTopPositioningMethodEnum]
@@ -125,7 +127,7 @@ class GLDAdm(MatlabBaseModel):
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
-    QualityRegime: Optional[str]
+    QualityRegime: Optional[COMQualityRegimeEnum]
     ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
 
@@ -139,17 +141,17 @@ class GLDDossier(MatlabBaseModel):
 class GLDSource(MatlabBaseModel):
     GLDID: Optional[int]
     ObservationID: Optional[str]
-    IsInterim: Optional[float]
+    IsInterim: Optional[bool | float]
     Investigator: Optional[str]
     ProcessID: Optional[int]
     LoggerSerial: Optional[str]
     LoggerDepth: Optional[float]
-    # LoggerBrand: Optional[str]
+    LoggerBrand: Optional[str]
     File: Optional[str]
     RefLevel: Optional[Any]
-    WaterDensity: Optional[float] = 1
-    Gravity: Optional[float] = 9.81
-    Battery: Optional[str] = ""
+    WaterDensity: Optional[float]
+    Gravity: Optional[float]
+    Battery: Optional[float]
     BaroID: Optional[int]
     Measurements: Optional[Any]
     Changes: Optional[Any]
@@ -171,7 +173,7 @@ class GMNAdm(MatlabBaseModel):
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
-    QualityRegime: Optional[str]
+    QualityRegime: Optional[int]
     ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
 

@@ -55,6 +55,8 @@ datatype_map = {
     "[m3 s−2 kg−1]": "float",
     "[kgm-3]": "float",
     "[Days]": "int",
+    "[%]": "float",
+    "[IDCategorical]": "int"
 }
 
 categorical_map = {
@@ -63,11 +65,9 @@ categorical_map = {
     # "WellStability": "str",
     "LoggerBrand": "str",
     "LoggerType": "str",
-    "QualityRegime": "str",
     "ObjRgstrDateTime": "float",
     "EventName": "Any",
     "RefLevel": "Any",
-    "Battery": "float",
 }
 
 
@@ -109,7 +109,7 @@ def _excel_schema_to_pydantic_str(
         for attr, datatype in attrs.iterrows():
             datatype_py = datatype["TargetDatatype"]
             datatype_name = datatype["TargetDatatype"]
-            if datatype_name == "[Categorical]":
+            if datatype_name == "[Categorical]": # or datatype_name == "[CategoricalID]":
                 if attr in categorical_map:
                     datatype_py = {
                         "type": categorical_map[attr],
@@ -122,16 +122,22 @@ def _excel_schema_to_pydantic_str(
                     if datatype.name == "BROID":
                         pass
                     if datatype.name in sam:
+                        namespace_enum = schema.namespace + sam[datatype.name] + "Enum"
+                        if namespace_enum[:-4] not in enums.keys():
+                            namespace_enum = "COM" + sam[datatype.name] + "Enum"
                         datatype_py = {
-                            "type": schema.namespace + sam[datatype.name] + "Enum",
+                            "type": namespace_enum,
                             "cardinality": [
                                 datatype["SourceMin"],
                                 datatype["SourceMax"],
                             ],
                         }
                     else:
+                        namespace_enum = schema.namespace + datatype.name + "Enum"
+                        if namespace_enum[:-4] not in enums.keys():
+                            namespace_enum = "COM" + datatype.name + "Enum"
                         datatype_py = {
-                            "type": schema.namespace + datatype.name + "Enum",
+                            "type": namespace_enum,
                             "cardinality": [
                                 datatype["SourceMin"],
                                 datatype["SourceMax"],
@@ -170,7 +176,7 @@ def read_excel_categories(category_filename: Optional[Path] = None) -> DataFrame
 
 def read_excel_waardelijsten() -> dict[str, list[str]]:
     ps = {}
-    for ns in ["GMW", "GMN", "GLD", "GAR"]:
+    for ns in ["GMW", "GMN", "GLD", "GAR", "COM"]:
         ps = {**ps, **read_excel_waardelijst(namespace=ns)}
     return ps
 

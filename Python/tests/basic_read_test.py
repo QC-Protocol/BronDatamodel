@@ -163,6 +163,7 @@ def tube_data() -> dict[str, Any]:
         "FilterBottomLevel": 2,
         "sedSumpLength": 2,
         "LoggerBrand": "",
+        "LoggerDepth": float('nan'),
         "LoggerSerial": "",
         "LoggerType": "",
         "GLDID": 1,

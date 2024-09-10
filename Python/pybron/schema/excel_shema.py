@@ -293,15 +293,18 @@ def generate_pydantic_schemas(
     ps = {}
     for df in df_schema:
         ps = {**ps, **_excel_schema_to_pydantic_str(df, enums)}
+    ps["GLDSource"]["Measurements"] = {"type": "list[GLDMeasurement]", "cardinality": ['Geen', 'Geen']}
     enum_list_str = [key + "Enum" for key, v in enums.items() if len(v) > 0]
     enum_list_str.sort()
     import_enum_str = ",\n    ".join(enum_list_str)
+
     with (target_directory / "BRONTypes.py").open("wt") as fid:
         fid.write("# flake8: noqa\n")
         fid.write("# This file is generated, do not change\n")
         fid.write("from typing import Any, Optional\n\n")
         fid.write("from pybron.schema.matlabbasemodel import MatlabBaseModel\n\n")
         fid.write(f"from .BRONEnums import (\n    {import_enum_str},\n)\n")
+        fid.write("from .BRONManualTypes import GLDMeasurement\n\n")
         for k, v in ps.items():
             fid.write(f"\n\nclass {k}(MatlabBaseModel):\n")
             for k2, v2 in v.items():
@@ -312,4 +315,6 @@ def generate_pydantic_schemas(
                 ):
                     fid.write(f"    {k2}: {v2['type']}\n")
                 else:
+                    if k2 == "Measurements":
+                        pass
                     fid.write(f"    {k2}: Optional[{v2['type']}]\n")

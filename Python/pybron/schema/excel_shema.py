@@ -294,6 +294,7 @@ def generate_pydantic_schemas(
     for df in df_schema:
         ps = {**ps, **_excel_schema_to_pydantic_str(df, enums)}
     ps["GLDSource"]["Measurements"] = {"type": "list[GLDMeasurement]", "cardinality": ['Geen', 'Geen']}
+    ps["GLDSource"]["Changes"] = {"type": "list[GLDChange]", "cardinality": ['Geen', 'Geen']}
     enum_list_str = [key + "Enum" for key, v in enums.items() if len(v) > 0]
     enum_list_str.sort()
     import_enum_str = ",\n    ".join(enum_list_str)
@@ -304,7 +305,7 @@ def generate_pydantic_schemas(
         fid.write("from typing import Any, Optional\n\n")
         fid.write("from pybron.schema.matlabbasemodel import MatlabBaseModel\n\n")
         fid.write(f"from .BRONEnums import (\n    {import_enum_str},\n)\n")
-        fid.write("from .BRONManualTypes import GLDMeasurement\n\n")
+        fid.write("from .BRONManualTypes import GLDMeasurement, GLDChange\n\n")
         for k, v in ps.items():
             fid.write(f"\n\nclass {k}(MatlabBaseModel):\n")
             for k2, v2 in v.items():

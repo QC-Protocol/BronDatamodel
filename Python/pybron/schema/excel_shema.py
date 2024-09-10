@@ -54,7 +54,7 @@ datatype_map = {
     "[Table]": "Any",
     "[m3 s−2 kg−1]": "float",
     "[kgm-3]": "float",
-    "[Days]": "int",
+    "[Days]": "float",
     "[%]": "float",
     "[IDCategorical]": "int"
 }

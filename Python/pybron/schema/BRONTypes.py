@@ -20,6 +20,7 @@ from .BRONEnums import (
     GLDCensoredReasonEnum,
     GLDCorrectionReasonEnum,
     GLDEvaluationProcedureEnum,
+    GLDEventNameEnum,
     GLDInterpolationTypeEnum,
     GLDMeasurementInstrumentTypeEnum,
     GLDObservationTypeEnum,
@@ -64,7 +65,7 @@ class GMWAdm(MatlabBaseModel):
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
-    QualityRegime: Optional[int]
+    QualityRegime: Optional[COMQualityRegimeEnum]
     ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
 
@@ -96,7 +97,7 @@ class GMWTube(MatlabBaseModel):
 class GMWHistory(MatlabBaseModel):
     GMWID: Optional[int]
     TubeNo: Optional[int]
-    EventName: Optional[Any]
+    EventName: Optional[GMWEventNameEnum]
     DateTime: Optional[float]
     Comment: Optional[str]
     CommentBy: Optional[str]
@@ -165,7 +166,7 @@ class GLDSource(MatlabBaseModel):
 
 class GLDHistory(MatlabBaseModel):
     GLDID: Optional[int]
-    EventName: Optional[Any]
+    EventName: Optional[GLDEventNameEnum]
     EventDate: Optional[float]
     SourceID: Optional[int]
     EventData: Optional[Any]
@@ -176,7 +177,7 @@ class GMNAdm(MatlabBaseModel):
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
-    QualityRegime: Optional[int]
+    QualityRegime: Optional[COMQualityRegimeEnum]
     ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
 
@@ -190,7 +191,7 @@ class GMNPoint(MatlabBaseModel):
 
 class GMNHistory(MatlabBaseModel):
     GMNID: Optional[int]
-    EventName: Optional[Any]
+    EventName: Optional[GMNEventNameEnum]
     EventDate: Optional[float]
     PointID: Optional[int]
     EventData: Optional[Any]

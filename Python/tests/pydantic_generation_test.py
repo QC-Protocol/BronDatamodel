@@ -15,7 +15,7 @@ from pybron.schema.excel_shema import (
     _excel_schema_to_pydantic_str,
     category_dataframe_to_pydantic_enum,
     category_dict_to_pydantic_enum,
-    read_excel_categories,
+    # read_excel_categories,
     read_excel_schema,
     read_excel_waardelijst,
     read_excel_waardelijsten,
@@ -89,6 +89,7 @@ def test_read_excel_waardelijsten():
     assert "kokerNietMetaal" in df["GMWWellHeadProtector"]
 
 
+"""
 def test_read_excel_categories():
     df = read_excel_categories()
     assert df["beschermconstructie"][2] == "kokerNietMetaal"
@@ -99,6 +100,7 @@ def test_category_dataframe_to_pydantic_enum():
     df = read_excel_categories()
     enums = category_dataframe_to_pydantic_enum(df)
     assert len(enums["HeadProtector"]) == 8
+"""
 
 
 def test_category_dict_to_pydantic_enum():

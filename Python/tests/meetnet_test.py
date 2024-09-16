@@ -9,6 +9,6 @@ def test_meetnet():
     net = GMNNet(Name="KRW Oost", startDateMonitoring=datetime2matlab(datetime.now()), DeliveryContext=GMNDeliveryContextEnum.waterwetPeilbeheer, MonitoringPurpose=GMNMonitoringPurposeEnum.onbekend, GroundwaterAspect=GMNGroundwaterAspectEnum.kwantiteit, endDateMonitoring=None)
     point = {0: GMNPoint(MeasuringPointCode="PB A", GMWBROID=None, TubeNo=1, GMNID=1)}
     history = None  # GMNHistory(EventName="Plaatsing", EventDate=datetime2matlab(datetime.now()), PointID=0, EventData=None)
-    gmn = GMN(adm=adm, net=net, point=point, history=history)
+    gmn = GMN(Adm=adm, Net=net, Point=point, History=history)
     assert gmn
 

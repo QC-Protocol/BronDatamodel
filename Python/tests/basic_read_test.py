@@ -75,13 +75,13 @@ def testdata_filename_bronv3_write() -> Path:
 
 def test_bronv3_read(testdata_filename_bronv3: Path):
     data = loadbronv3(testdata_filename_bronv3)
-    assert data.GMW[0].adm.BROID == "GMW000000042649"
-    assert data.GMW[0].well.XCoordinate == 157495.0
-    assert isinstance(data.GMW[0].well, GMWWell)
-    assert isnan(data.GMW[0].tube[0].LoggerDepth)
+    assert data.GMW[0].Adm.BROID == "GMW000000042649"
+    assert data.GMW[0].Well.XCoordinate == 157495.0
+    assert isinstance(data.GMW[0].Well, GMWWell)
+    assert isnan(data.GMW[0].Tube[0].LoggerDepth)
     for well in data.GMW:
-        for ii_tube, _ in enumerate(well.tube):
-            tube: GMWTube = well.tube[ii_tube]
+        for ii_tube, _ in enumerate(well.Tube):
+            tube: GMWTube = well.Tube[ii_tube]
             assert isinstance(tube.IsVarTubeDiam, float) or tube.IsVarTubeDiam is None
 
 
@@ -91,18 +91,18 @@ def test_bronv3_write(
     data = loadbronv3(testdata_filename_bronv3)
     savebronv3(testdata_filename_bronv3_write, data)
     data_to_verify = loadbronv3(testdata_filename_bronv3_write)
-    assert data.GMW[0].well.NITGCode == data_to_verify.GMW[0].well.NITGCode
-    assert isnan(data.GMW[0].tube[0].LoggerDepth)
+    assert data.GMW[0].Well.NITGCode == data_to_verify.GMW[0].Well.NITGCode
+    assert isnan(data.GMW[0].Tube[0].LoggerDepth)
     # assert data["GMW"][0].adm[0].bla == data_to_verify["GMW"][0].well.NITGCode
     for ii_gmw, _ in enumerate(data.GMW):
-        if isinstance(data.GMW[ii_gmw].tube, list):
-            for ii_tube, _ in enumerate(data.GMW[ii_gmw].tube):
+        if isinstance(data.GMW[ii_gmw].Tube, list):
+            for ii_tube, _ in enumerate(data.GMW[ii_gmw].Tube):
                 assert (
-                    data.GMW[ii_gmw].tube[ii_tube]
-                    == data_to_verify.GMW[ii_gmw].tube[ii_tube]
+                    data.GMW[ii_gmw].Tube[ii_tube]
+                    == data_to_verify.GMW[ii_gmw].Tube[ii_tube]
                 )
         else:
-            assert data.GMW[ii_gmw].tube == data_to_verify.GMW[ii_gmw].tube
+            assert data.GMW[ii_gmw].Tube == data_to_verify.GMW[ii_gmw].Tube
 
 
 @pytest.fixture
@@ -178,7 +178,7 @@ def test_well(renew_schemas, well_data):
 
 def test_GMW(well_data, adm_data):
     gmw = GMW.from_dict({"Well": well_data, "Tube": [], "History": [], "Adm": adm_data})
-    assert gmw.well.Name == "text"
+    assert gmw.Well.Name == "text"
     assert GMW.model_validate(gmw)
 
 

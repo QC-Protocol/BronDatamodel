@@ -37,6 +37,7 @@ def read_excel_schema(
 
     return schema_df
 
+idcategorical: list[str] = ["COMQualityRegime"]
 
 datatype_map = {
     "[ID]": "int",
@@ -56,7 +57,7 @@ datatype_map = {
     "[kgm-3]": "float",
     "[Days]": "float",
     "[%]": "float",
-    "[IDCategorical]": "int"
+    "[IDCategorical]": "COMQualityRegimeEnum"
 }
 
 categorical_map = {
@@ -67,7 +68,7 @@ categorical_map = {
     "LoggerType": "str",
     "Unit": "str",
     "ObjRgstrDateTime": "float",
-    "EventName": "Any",
+    # "EventName": "Any",
     "RefLevel": "Any",
 }
 
@@ -163,7 +164,7 @@ def _excel_schema_to_pydantic_str(
 
     return r
 
-
+"""
 def read_excel_categories(category_filename: Optional[Path] = None) -> DataFrame:
     if not category_filename:
         category_filename = (
@@ -177,13 +178,41 @@ def read_excel_categories(category_filename: Optional[Path] = None) -> DataFrame
         category_df = read_excel(fid, sheet_name="Waardelijsten", header=0)
 
     return category_df
-
+"""
 
 def read_excel_waardelijsten() -> dict[str, list[str]]:
     ps = {}
     for ns in ["GMW", "GMN", "GLD", "GAR", "COM"]:
         ps = {**ps, **read_excel_waardelijst(namespace=ns)}
+    
+    for ns in ["GMW", "GMN", "GLD"]:
+        d = read_excel_gebeurtenis(namespace=ns)
+        ps[ns + "EventName"] = d[ns + "EventName"]
+
     return ps
+
+def read_excel_gebeurtenis(
+        event_filename: Optional[Path] = None,
+        namespace: str = "GMW"
+) -> dict[str, list[str]]:
+    if not event_filename:
+        event_filename = (
+            Path(os.path.dirname(os.path.realpath(__file__)))
+            / ".."
+            / ".."
+            / ".."
+            / "BROMappings"
+            / f"Mapping BRO {namespace} Events.xlsx"
+        )
+
+    with event_filename.open("rb") as fid:
+        event_df_sheets = read_excel(fid, header=0, sheet_name=None)
+
+    d = dict()
+    for _, sheet in event_df_sheets.items():
+        d[namespace + "EventName"] = list(sheet["BronGebeurtenis"][0:].values)
+
+    return d
 
 
 def read_excel_waardelijst(
@@ -263,9 +292,9 @@ def generate_pydantic_enums(enums: dict[str, Enum], target_file: Path):
     logger = logging.getLogger(__name__)
     logger.warning(f"Writing enums to {target_file}")
     key_translation = str.maketrans(
-        {".": "_", ":": "_", "-": "_", "+": "_", " ": "_", "/": "_"}
+        {".": "_", ":": "_", "-": "_", "+": "_", " ": "_", "/": "_", "(": "_", ")": "_"}
     )
-    with target_file.open("wt") as fid:
+    with target_file.open("wt", encoding="utf-8") as fid:
         fid.write("# flake8: noqa\n")
         fid.write("from enum import Enum\n")
 
@@ -273,10 +302,19 @@ def generate_pydantic_enums(enums: dict[str, Enum], target_file: Path):
             if len(v) == 0:
                 continue
             fid.write(f"\n\nclass {k}Enum(str, Enum):\n")
-            for field in v:
-                fid.write(
-                    f'    {field.value.translate(key_translation)} = "{field.value}"\n'
-                )
+            if k == "COMQualityRegime":
+                pass
+            if k in idcategorical:
+                for ii, field in enumerate(v):
+                    fid.write(
+                        f'    {field.value.translate(key_translation)} = {ii}\n'
+                    )
+
+            else:
+                for field in v:
+                    fid.write(
+                        f'    {field.value.translate(key_translation)} = "{field.value}"\n'
+                    )
             if "onbekend" in v._member_names_:
                 fid.write("\n    @classmethod\n")
                 fid.write("    def _missing_(cls, value):\n")

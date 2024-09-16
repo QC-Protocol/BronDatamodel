@@ -88,6 +88,8 @@ class GLD(MatlabBaseModel):
                 gld.history.append(GLDHistory(**history))
         else:
             gld.history.append(GLDHistory(**d["History"]))
+        if not isinstance(d["Source"], list):
+            d["Source"] = [d["Source"]]
         if isinstance(d["Source"], list):
             for source in d["Source"]:
                 if isinstance(source["Measurements"], list):
@@ -95,9 +97,9 @@ class GLD(MatlabBaseModel):
                 else:
                     measurements = [GLDMeasurement(**source["Measurements"])]
                 if isinstance(source["Changes"], list):
-                    changes = [GLDChange(**c) for c in source["Changes"]]
+                    changes = [GLDChange.from_dict(c) for c in source["Changes"]]
                 elif not isinstance(source["Changes"], str):
-                    changes = [GLDChange(**source["Changes"])]
+                    changes = [GLDChange.from_dict(source["Changes"])]
                 else:
                     changes = []
                 source["Measurements"] = []

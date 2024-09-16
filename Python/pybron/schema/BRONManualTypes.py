@@ -1,3 +1,4 @@
+from pydantic import ValidationError
 from Python.pybron.schema.matlabbasemodel import MatlabBaseModel
 
 
@@ -7,6 +8,17 @@ class GLDMeasurement(MatlabBaseModel):
 
 
 class GLDChange(MatlabBaseModel):
-    values: list[list[float]]
+    values: list[tuple[float, float]]
     person: str
     date: float
+
+    @staticmethod
+    def from_dict(data: dict):
+        if len(data['values']) > 0:
+            if isinstance(data['values'][0], float):
+                data['values'] = [data['values']]
+        try:
+            change = GLDChange(**data)
+        except ValidationError:
+            pass
+        return change

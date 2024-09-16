@@ -151,6 +151,7 @@ class GLDSource(MatlabBaseModel):
     LoggerBrand: Optional[str]
     File: Optional[str]
     RefLevel: Optional[Any]
+    Unit: Optional[str]
     WaterDensity: Optional[float]
     Gravity: Optional[float]
     Battery: Optional[float]

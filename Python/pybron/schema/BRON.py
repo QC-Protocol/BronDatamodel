@@ -57,10 +57,10 @@ class GMW(MatlabBaseModel):
 
 
 class GLD(MatlabBaseModel):
-    source: list[GLDSource]
     adm: list[GLDAdm]
     dossier: list[GLDDossier]
     history: list[GLDHistory]
+    source: list[GLDSource]
 
     @classmethod
     def from_dict(cls, d: dict):

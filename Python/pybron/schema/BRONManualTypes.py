@@ -1,5 +1,5 @@
 from pydantic import ValidationError
-from Python.pybron.schema.matlabbasemodel import MatlabBaseModel
+from pybron.schema.matlabbasemodel import MatlabBaseModel
 
 
 class GLDMeasurement(MatlabBaseModel):

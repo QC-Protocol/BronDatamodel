@@ -9,7 +9,7 @@ Modified By: Dirkjan Krijnders
 Copyright 2024 - 2024 Antea Nederland B.V.
 """
 
-from Python.pybron.schema.BRONManualTypes import GLDMeasurement, GLDChange
+from pybron.schema.BRONManualTypes import GLDMeasurement, GLDChange
 from pybron.schema.BRONTypes import (
     GLDAdm,
     GLDDossier,
@@ -118,9 +118,9 @@ class GLD(MatlabBaseModel):
 
 class GMN(MatlabBaseModel):
     adm: GMNAdm
+    history: list[GMNHistory] | None
     net: GMNNet
     point: dict[int, GMNPoint] | None
-    history: list[GMNHistory] | None
 
     @classmethod
     def from_dict(cls, d: dict):

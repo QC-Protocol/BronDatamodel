@@ -1144,7 +1144,7 @@ class GARAnalyticalTechniqueEnum(str, Enum):
     qPCR = "qPCR"
 
 
-class COMQualityRegimeEnum(str, Enum):
+class COMQualityRegimeEnum(int, Enum):
     Bron = 0
     IMBRO_A = 1
     IMBRO = 2

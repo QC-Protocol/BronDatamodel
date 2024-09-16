@@ -60,7 +60,7 @@ def testdata_filename_bronv3() -> Path:
         / ".."
         / ".."
         / "ExampleData"
-        / "2024-09-16 Testdata Provincie Utrecht (export).bron2"
+        / "2024-09-16b Testdata Provincie Utrecht (export).bron2"
     )
 
 

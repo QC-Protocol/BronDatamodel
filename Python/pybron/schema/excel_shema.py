@@ -301,16 +301,15 @@ def generate_pydantic_enums(enums: dict[str, Enum], target_file: Path):
         for k, v in enums.items():
             if len(v) == 0:
                 continue
-            fid.write(f"\n\nclass {k}Enum(str, Enum):\n")
-            if k == "COMQualityRegime":
-                pass
             if k in idcategorical:
+                fid.write(f"\n\nclass {k}Enum(int, Enum):\n")
                 for ii, field in enumerate(v):
                     fid.write(
                         f'    {field.value.translate(key_translation)} = {ii}\n'
                     )
 
             else:
+                fid.write(f"\n\nclass {k}Enum(str, Enum):\n")
                 for field in v:
                     fid.write(
                         f'    {field.value.translate(key_translation)} = "{field.value}"\n'

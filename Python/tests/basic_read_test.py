@@ -60,7 +60,7 @@ def testdata_filename_bronv3() -> Path:
         / ".."
         / ".."
         / "ExampleData"
-        / "2024-08-29 Testdata Provincie Utrecht (export).bron2"
+        / "2024-09-16 Testdata Provincie Utrecht (export).bron2"
     )
 
 
@@ -69,7 +69,7 @@ def testdata_filename_bronv3_write() -> Path:
     return (
         Path(os.path.dirname(os.path.realpath(__file__)))
         / "data"
-        / "2024-08-29 Testdata Provincie Utrecht write-test.bron2"
+        / "2024-09-16 Testdata Provincie Utrecht write-test.bron2"
     )
 
 

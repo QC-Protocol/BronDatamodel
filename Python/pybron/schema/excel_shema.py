@@ -65,6 +65,7 @@ categorical_map = {
     # "WellStability": "str",
     "LoggerBrand": "str",
     "LoggerType": "str",
+    "Unit": "str",
     "ObjRgstrDateTime": "float",
     "EventName": "Any",
     "RefLevel": "Any",
@@ -107,6 +108,8 @@ def _excel_schema_to_pydantic_str(
             .set_index("TargetAttributeEng")
         )
         for attr, datatype in attrs.iterrows():
+            if attr == "EventName":
+                pass
             datatype_py = datatype["TargetDatatype"]
             datatype_name = datatype["TargetDatatype"]
             if datatype_name == "[Categorical]": # or datatype_name == "[CategoricalID]":
@@ -133,6 +136,8 @@ def _excel_schema_to_pydantic_str(
                             ],
                         }
                     else:
+                        if datatype.name == "EventData":
+                            pass
                         namespace_enum = schema.namespace + datatype.name + "Enum"
                         if namespace_enum[:-4] not in enums.keys():
                             namespace_enum = "COM" + datatype.name + "Enum"
@@ -316,6 +321,4 @@ def generate_pydantic_schemas(
                 ):
                     fid.write(f"    {k2}: {v2['type']}\n")
                 else:
-                    if k2 == "Measurements":
-                        pass
                     fid.write(f"    {k2}: Optional[{v2['type']}]\n")

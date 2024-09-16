@@ -37,7 +37,9 @@ def read_excel_schema(
 
     return schema_df
 
+
 idcategorical: list[str] = ["COMQualityRegime"]
+
 
 datatype_map = {
     "[ID]": "int",
@@ -164,21 +166,6 @@ def _excel_schema_to_pydantic_str(
 
     return r
 
-"""
-def read_excel_categories(category_filename: Optional[Path] = None) -> DataFrame:
-    if not category_filename:
-        category_filename = (
-            Path(os.path.dirname(os.path.realpath(__file__)))
-            / ".."
-            / "data"
-            / "BROObject - GMW data file NL samengevoegd (v2.x).xlsx"
-        )
-
-    with category_filename.open("rb") as fid:
-        category_df = read_excel(fid, sheet_name="Waardelijsten", header=0)
-
-    return category_df
-"""
 
 def read_excel_waardelijsten() -> dict[str, list[str]]:
     ps = {}

@@ -89,20 +89,6 @@ def test_read_excel_waardelijsten():
     assert "kokerNietMetaal" in df["GMWWellHeadProtector"]
 
 
-"""
-def test_read_excel_categories():
-    df = read_excel_categories()
-    assert df["beschermconstructie"][2] == "kokerNietMetaal"
-
-
-@pytest.mark.skip
-def test_category_dataframe_to_pydantic_enum():
-    df = read_excel_categories()
-    enums = category_dataframe_to_pydantic_enum(df)
-    assert len(enums["HeadProtector"]) == 8
-"""
-
-
 def test_category_dict_to_pydantic_enum():
     df = read_excel_waardelijst()
     enums = category_dict_to_pydantic_enum(df)

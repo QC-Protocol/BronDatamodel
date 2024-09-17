@@ -9,6 +9,7 @@ Modified By: Dirkjan Krijnders
 Copyright 2024 - 2024 Antea Nederland B.V.
 """
 
+from Python.pybron.schema.BRONManualTypes import GLDMeasurement, GLDChange
 from pybron.schema.BRONTypes import (
     GLDAdm,
     GLDDossier,
@@ -89,7 +90,24 @@ class GLD(MatlabBaseModel):
             gld.history.append(GLDHistory(**d["History"]))
         if isinstance(d["Source"], list):
             for source in d["Source"]:
+                if isinstance(source["Measurements"], list):
+                    measurements = [GLDMeasurement(**m) for m in source["Measurements"]]
+                else:
+                    measurements = [GLDMeasurement(**source["Measurements"])]
+                if isinstance(source["Changes"], list):
+                    changes = [GLDChange(**c) for c in source["Changes"]]
+                elif not isinstance(source["Changes"], str):
+                    changes = [GLDChange(**source["Changes"])]
+                else:
+                    changes = []
+                source["Measurements"] = []
+                source["Changes"] = []
+
                 gld.source.append(GLDSource(**source))
+                for m in measurements:
+                    gld.source[-1].Measurements.append(m)
+                for c in changes:
+                    gld.source[-1].Changes.append(c)
         else:
             gld.source.append(GLDSource(**d["Source"]))
 

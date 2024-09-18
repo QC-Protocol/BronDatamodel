@@ -7,7 +7,7 @@ class GLDMeasurement(MatlabBaseModel):
     RawValue: float
 
 
-class GLDChange(MatlabBaseModel):
+class COMChange(MatlabBaseModel):
     values: list[tuple[float, float]]
     person: str
     date: float
@@ -18,7 +18,7 @@ class GLDChange(MatlabBaseModel):
             if isinstance(data['values'][0], float):
                 data['values'] = [data['values']]
         try:
-            change = GLDChange(**data)
+            change = COMChange(**data)
         except ValidationError:
             pass
         return change

@@ -42,15 +42,15 @@ class MatlabBaseModel(BaseModel):
             return {k: None if v == "" else v for k, v in data.items()}
         return data
 
-    @model_validator(mode="before")
-    @classmethod
-    def nan_to_None(cls, data):
-        if isinstance(data, dict):
-            return {
-                k: None if isinstance(v, float) and isnan(v) else v
-                for k, v in data.items()
-            }
-        return data
+    # @model_validator(mode="before")
+    # @classmethod
+    # def nan_to_None(cls, data):
+    #     if isinstance(data, dict):
+    #         return {
+    #             k: None if isinstance(v, float) and isnan(v) else v
+    #             for k, v in data.items()
+    #         }
+    #     return data
 
     def as_matlab_dict(
         self, only_children=False, use_structarray=False

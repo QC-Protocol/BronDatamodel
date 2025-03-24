@@ -1,9 +1,11 @@
 # flake8: noqa
+# This file is generated, do not change
 from typing import Any, Optional
 
 from pybron.schema.matlabbasemodel import MatlabBaseModel
 
 from .BRONEnums import (
+    COMQualityRegimeEnum,
     GARAnalyticalTechniqueEnum,
     GARColourEnum,
     GARColourStrengthEnum,
@@ -18,6 +20,7 @@ from .BRONEnums import (
     GLDCensoredReasonEnum,
     GLDCorrectionReasonEnum,
     GLDEvaluationProcedureEnum,
+    GLDEventNameEnum,
     GLDInterpolationTypeEnum,
     GLDMeasurementInstrumentTypeEnum,
     GLDObservationTypeEnum,
@@ -53,6 +56,8 @@ from .BRONEnums import (
     GMWWellHeadProtectorEnum,
     GMWWellStabilityEnum,
 )
+from .BRONManualTypes import GLDMeasurement, COMChange
+
 
 
 class GMWAdm(MatlabBaseModel):
@@ -60,7 +65,7 @@ class GMWAdm(MatlabBaseModel):
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
-    QualityRegime: Optional[int]
+    QualityRegime: Optional[COMQualityRegimeEnum]
     ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
 
@@ -69,9 +74,9 @@ class GMWTube(MatlabBaseModel):
     GMWID: Optional[int]
     TubeNo: Optional[int]
     Type: Optional[GMWTubeTypeEnum]
-    ArtesianWellCapPresent: Optional[float]
+    ArtesianWellCapPresent: Optional[bool | float]
     TubeDiameter: Optional[float]
-    IsVarTubeDiam: Optional[float]
+    IsVarTubeDiam: Optional[bool | float]
     Status: Optional[GMWTubeStatusEnum]
     TopLevel: Optional[float]
     VertPosMethodTop: Optional[GMWTubeTopPositioningMethodEnum]
@@ -92,7 +97,7 @@ class GMWTube(MatlabBaseModel):
 class GMWHistory(MatlabBaseModel):
     GMWID: Optional[int]
     TubeNo: Optional[int]
-    EventName: Optional[Any]
+    EventName: Optional[GMWEventNameEnum]
     DateTime: Optional[float]
     Comment: Optional[str]
     CommentBy: Optional[str]
@@ -125,7 +130,7 @@ class GLDAdm(MatlabBaseModel):
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
-    QualityRegime: Optional[str]
+    QualityRegime: Optional[COMQualityRegimeEnum]
     ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
 
@@ -139,29 +144,30 @@ class GLDDossier(MatlabBaseModel):
 class GLDSource(MatlabBaseModel):
     GLDID: Optional[int]
     ObservationID: Optional[str]
-    IsInterim: Optional[float]
+    IsInterim: Optional[bool | float]
     Investigator: Optional[str]
     ProcessID: Optional[int]
     LoggerSerial: Optional[str]
     LoggerDepth: Optional[float]
-    # LoggerBrand: Optional[str]
+    LoggerBrand: Optional[str]
     File: Optional[str]
     RefLevel: Optional[Any]
-    WaterDensity: Optional[float] = 1
-    Gravity: Optional[float] = 9.81
-    Battery: Optional[str] = ""
+    Unit: Optional[str]
+    WaterDensity: Optional[float]
+    Gravity: Optional[float]
+    Battery: Optional[float]
     BaroID: Optional[int]
-    Measurements: Optional[Any]
-    Changes: Optional[Any]
+    Measurements: Optional[list[GLDMeasurement]]
+    Changes: Optional[list[COMChange]]
     Drift: Optional[float]
-    TimeShift: Optional[int]
+    TimeShift: Optional[float]
     iChange: Optional[int]
 
 
 class GLDHistory(MatlabBaseModel):
     GLDID: Optional[int]
-    EventName: Optional[Any]
-    EventDate: Optional[float]
+    EventName: Optional[GLDEventNameEnum]
+    DateTime: Optional[float]
     SourceID: Optional[int]
     EventData: Optional[Any]
 
@@ -171,7 +177,7 @@ class GMNAdm(MatlabBaseModel):
     BROID: Optional[str]
     AccParty: Optional[str]
     DvRespParty: Optional[str]
-    QualityRegime: Optional[str]
+    QualityRegime: Optional[COMQualityRegimeEnum]
     ObjRgstrDateTime: Optional[float]
     LastRgstrEvent: Optional[int]
 
@@ -185,8 +191,8 @@ class GMNPoint(MatlabBaseModel):
 
 class GMNHistory(MatlabBaseModel):
     GMNID: Optional[int]
-    EventName: Optional[Any]
-    EventDate: Optional[float]
+    EventName: Optional[GMNEventNameEnum]
+    DateTime: Optional[float]
     PointID: Optional[int]
     EventData: Optional[Any]
 

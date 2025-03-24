@@ -56,7 +56,7 @@ from .BRONEnums import (
     GMWWellHeadProtectorEnum,
     GMWWellStabilityEnum,
 )
-from .BRONManualTypes import GLDMeasurement, GLDChange
+from .BRONManualTypes import GLDMeasurement, COMChange
 
 
 
@@ -158,7 +158,7 @@ class GLDSource(MatlabBaseModel):
     Battery: Optional[float]
     BaroID: Optional[int]
     Measurements: Optional[list[GLDMeasurement]]
-    Changes: Optional[list[GLDChange]]
+    Changes: Optional[list[COMChange]]
     Drift: Optional[float]
     TimeShift: Optional[float]
     iChange: Optional[int]

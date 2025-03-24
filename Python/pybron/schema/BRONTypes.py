@@ -167,7 +167,7 @@ class GLDSource(MatlabBaseModel):
 class GLDHistory(MatlabBaseModel):
     GLDID: Optional[int]
     EventName: Optional[GLDEventNameEnum]
-    EventDate: Optional[float]
+    DateTime: Optional[float]
     SourceID: Optional[int]
     EventData: Optional[Any]
 
@@ -192,7 +192,7 @@ class GMNPoint(MatlabBaseModel):
 class GMNHistory(MatlabBaseModel):
     GMNID: Optional[int]
     EventName: Optional[GMNEventNameEnum]
-    EventDate: Optional[float]
+    DateTime: Optional[float]
     PointID: Optional[int]
     EventData: Optional[Any]
 

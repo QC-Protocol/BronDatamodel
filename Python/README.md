@@ -54,3 +54,6 @@ generate_bron_schemas pybron/schema
 ```
 
 Make sure all tests all after (re)generating the schemas. If the schemas change it may be necessary to update the tests.
+
+After an succesfull schema update commit the generated `BRON*.py` files for future convienence. Also do a version bump as this is likely to require change in software using this package.
+

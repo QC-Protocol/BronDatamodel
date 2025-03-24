@@ -209,6 +209,7 @@ class GMWEventNameEnum(str, Enum):
     Buis_gestegen = "Buis gestegen"
     ZPosities_ingemeten = "ZPosities ingemeten"
     XYPositie_ingemeten = "XYPositie ingemeten"
+    XYZPositie_ingemeten = "XYZPositie ingemeten"
     Buis_ingekort = "Buis ingekort"
     Buis_opgelengd = "Buis opgelengd"
     Buisdeel_ingeplaatst = "Buisdeel ingeplaatst"
@@ -223,7 +224,6 @@ class GMWEventNameEnum(str, Enum):
     Buis_bijgeplaatst = "Buis bijgeplaatst"
     Buis_vervangen = "Buis vervangen"
     Put_vervangen = "Put vervangen"
-    Put__verplaatst = "Put  verplaatst"
     Correctie__datumtijd_ = "Correctie (datumtijd)"
     Correctie__attribuut_ = "Correctie (attribuut)"
     Correctie__invoeging_ = "Correctie (invoeging)"
@@ -231,8 +231,8 @@ class GMWEventNameEnum(str, Enum):
     Logger_geplaatst = "Logger geplaatst"
     Logger_verwijderd = "Logger verwijderd"
     Logger_vervangen = "Logger vervangen"
-    Logger_lager_gehangen = "Logger lager gehangen"
-    Logger_hoger_gehangen = "Logger hoger gehangen"
+    Logger_verlaagd_ = "Logger verlaagd "
+    Logger_verhoogd = "Logger verhoogd"
     Buis_schoongemaakt = "Buis schoongemaakt"
 
 

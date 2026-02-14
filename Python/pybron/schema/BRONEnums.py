@@ -199,21 +199,41 @@ class GMWGlueEnum(str, Enum):
 
 
 class GMWEventNameEnum(str, Enum):
-    beschermconstructieVeranderd = "beschermconstructieVeranderd"
-    buisIngekort = "buisIngekort"
-    buisOpgelengd = "buisOpgelengd"
-    buisdeelIngeplaatst = "buisdeelIngeplaatst"
-    buisstatusVeranderd = "buisstatusVeranderd"
-    eigenaarVeranderd = "eigenaarVeranderd"
-    elektrodestatusVeranderd = "elektrodestatusVeranderd"
-    maaiveldVerlegd = "maaiveldVerlegd"
-    nieuweBepalingMaaiveld = "nieuweBepalingMaaiveld"
-    nieuweBepalingPosities = "nieuweBepalingPosities"
-    nieuweInmetingMaaiveld = "nieuweInmetingMaaiveld"
-    nieuweInmetingPosities = "nieuweInmetingPosities"
-    onderhouderVeranderd = "onderhouderVeranderd"
-    putIngericht = "putIngericht"
-    putOpgeruimd = "putOpgeruimd"
+    Put_ingericht = "Put ingericht"
+    Maaiveld_verlaagd = "Maaiveld verlaagd"
+    Maaiveld_opgehoogd = "Maaiveld opgehoogd"
+    Maaiveld_gedaald = "Maaiveld gedaald"
+    Maaiveld_gestegen = "Maaiveld gestegen"
+    Maaiveld_ingemeten = "Maaiveld ingemeten"
+    Buis_gedaald = "Buis gedaald"
+    Buis_gestegen = "Buis gestegen"
+    ZPosities_ingemeten = "ZPosities ingemeten"
+    XYPositie_ingemeten = "XYPositie ingemeten"
+    XYZPositie_ingemeten = "XYZPositie ingemeten"
+    Buis_ingekort = "Buis ingekort"
+    Buis_opgelengd = "Buis opgelengd"
+    Buisdeel_ingeplaatst = "Buisdeel ingeplaatst"
+    Beschermconstructie_veranderd = "Beschermconstructie veranderd"
+    Elektrodestatus_veranderd = "Elektrodestatus veranderd"
+    Eigenaar_veranderd = "Eigenaar veranderd"
+    Onderhouder_veranderd = "Onderhouder veranderd"
+    Leverancier_veranderd = "Leverancier veranderd"
+    Buisstatus_veranderd = "Buisstatus veranderd"
+    Put_opgeruimd = "Put opgeruimd"
+    Uit_registratie = "Uit registratie"
+    Buis_bijgeplaatst = "Buis bijgeplaatst"
+    Buis_vervangen = "Buis vervangen"
+    Put_vervangen = "Put vervangen"
+    Correctie__datumtijd_ = "Correctie (datumtijd)"
+    Correctie__attribuut_ = "Correctie (attribuut)"
+    Correctie__invoeging_ = "Correctie (invoeging)"
+    Correctie__verwijdering_ = "Correctie (verwijdering)"
+    Logger_geplaatst = "Logger geplaatst"
+    Logger_verwijderd = "Logger verwijderd"
+    Logger_vervangen = "Logger vervangen"
+    Logger_verlaagd_ = "Logger verlaagd "
+    Logger_verhoogd = "Logger verhoogd"
+    Buis_schoongemaakt = "Buis schoongemaakt"
 
 
 class GMWElectrodeStatusEnum(str, Enum):
@@ -294,12 +314,8 @@ class GMNMonitoringPurposeEnum(str, Enum):
     strategischBeheerKwaliteitRegionaal = "strategischBeheerKwaliteitRegionaal"
     strategischBeheerKwantiteitLandelijk = "strategischBeheerKwantiteitLandelijk"
     strategischBeheerKwantiteitRegionaal = "strategischBeheerKwantiteitRegionaal"
-    veiligstellingDrinkwatervoorzieningKwaliteit = (
-        "veiligstellingDrinkwatervoorzieningKwaliteit"
-    )
-    veiligstellingDrinkwatervoorzieningKwantiteit = (
-        "veiligstellingDrinkwatervoorzieningKwantiteit"
-    )
+    veiligstellingDrinkwatervoorzieningKwaliteit = "veiligstellingDrinkwatervoorzieningKwaliteit"
+    veiligstellingDrinkwatervoorzieningKwantiteit = "veiligstellingDrinkwatervoorzieningKwantiteit"
     veiligstellingGrondwaterKwaliteit = "veiligstellingGrondwaterKwaliteit"
     veiligstellingGrondwaterKwantiteit = "veiligstellingGrondwaterKwantiteit"
     waterstaatkundigeVerzorgingKwaliteit = "waterstaatkundigeVerzorgingKwaliteit"
@@ -323,11 +339,19 @@ class GMNGroundwaterAspectEnum(str, Enum):
 
 
 class GMNEventNameEnum(str, Enum):
-    meetpuntBeeindigen = "meetpuntBeeindigen"
-    meetpuntToevoegen = "meetpuntToevoegen"
-    monitoringbuisVervangen = "monitoringbuisVervangen"
-    registratieBeeindigen = "registratieBeeindigen"
-    registratieStarten = "registratieStarten"
+    Start_meetnet = "Start meetnet"
+    Meetpunt_toegevoegd = "Meetpunt toegevoegd"
+    Meetpunt_beëindigd = "Meetpunt beëindigd"
+    Meetpunt_verplaatst = "Meetpunt verplaatst"
+    Buis_vervangen = "Buis vervangen"
+    Buis_bijgeplaatst = "Buis bijgeplaatst"
+    leverancierVeranderd = "leverancierVeranderd"
+    Einde_meetnet = "Einde meetnet"
+    Uit_registratie = "Uit registratie"
+    Correctie__attribuut_ = "Correctie (attribuut)"
+    Correctie__datumtijd_ = "Correctie (datumtijd)"
+    Correctie__invoeging_ = "Correctie (invoeging)"
+    Correctie__verwijdering_ = "Correctie (verwijdering)"
 
 
 class GMNDeliveryContextEnum(str, Enum):
@@ -422,9 +446,7 @@ class GLDInterpolationTypeEnum(str, Enum):
 
 
 class GLDEvaluationProcedureEnum(str, Enum):
-    PMBProtocolDatakwaliteitscontroleQC2018v2_0 = (
-        "PMBProtocolDatakwaliteitscontroleQC2018v2.0"
-    )
+    PMBProtocolDatakwaliteitscontroleQC2018v2_0 = "PMBProtocolDatakwaliteitscontroleQC2018v2.0"
     RWSAATGrondwaterv1_0 = "RWSAATGrondwaterv1.0"
     brabantWater2013 = "brabantWater2013"
     eijkelkampDataValidatiev0_0_9 = "eijkelkampDataValidatiev0.0.9"
@@ -432,9 +454,7 @@ class GLDEvaluationProcedureEnum(str, Enum):
     oordeelDeskundige = "oordeelDeskundige"
     validatieprocedureEvidesWaterbedrijf = "validatieprocedureEvidesWaterbedrijf"
     vitensBeoordelingsprotocolGrondwater = "vitensBeoordelingsprotocolGrondwater"
-    warecoWaterDataValidatieProtocolv20200219 = (
-        "warecoWaterDataValidatieProtocolv20200219"
-    )
+    warecoWaterDataValidatieProtocolv20200219 = "warecoWaterDataValidatieProtocolv20200219"
     waternetBeoordelingsprocedure = "waternetBeoordelingsprocedure"
 
     @classmethod
@@ -1122,3 +1142,23 @@ class GARAnalyticalTechniqueEnum(str, Enum):
     VISL = "VISL"
     VOL = "VOL"
     qPCR = "qPCR"
+
+
+class COMQualityRegimeEnum(int, Enum):
+    Bron = 0
+    IMBRO_A = 1
+    IMBRO = 2
+
+
+class GLDEventNameEnum(str, Enum):
+    Start_registratie = "Start registratie"
+    Meetreeks = "Meetreeks"
+    Controlereeks = "Controlereeks"
+    Einde_registratie = "Einde registratie"
+    Leverancier_veranderd = "Leverancier veranderd"
+    Uit_registratie = "Uit registratie"
+    Correctie__attribuut_ = "Correctie (attribuut)"
+    Correctie__metingen_ = "Correctie (metingen)"
+    Correctie__datumtijd_ = "Correctie (datumtijd)"
+    Correctie__invoeging_ = "Correctie (invoeging)"
+    Correctie__verwijdering_ = "Correctie (verwijdering)"

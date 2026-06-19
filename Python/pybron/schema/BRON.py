@@ -9,6 +9,7 @@ Modified By: Dirkjan Krijnders
 Copyright 2024 - 2024 Antea Nederland B.V.
 """
 
+from pybron.schema.BRONManualTypes import GLDMeasurement, COMChange
 from pybron.schema.BRONTypes import (
     GLDAdm,
     GLDDossier,
@@ -27,84 +28,103 @@ from pybron.schema.matlabbasemodel import MatlabBaseModel
 
 
 class GMW(MatlabBaseModel):
-    well: GMWWell
-    tube: list[GMWTube]
-    history: list[GMWHistory]
-    adm: GMWAdm
+    Well: GMWWell
+    Tube: list[GMWTube]
+    History: list[GMWHistory]
+    Adm: GMWAdm
 
     @classmethod
     def from_dict(cls, d: dict):
         gmw = cls(
             **{
-                "well": GMWWell(**d["Well"]),
-                "tube": [],
-                "history": [],
-                "adm": GMWAdm(**d["Adm"]),
+                "Well": GMWWell(**d["Well"]),
+                "Tube": [],
+                "History": [],
+                "Adm": GMWAdm(**d["Adm"]),
             }
         )
         if isinstance(d["Tube"], list):
             for tube in d["Tube"]:
-                gmw.tube.append(GMWTube(**tube))
+                gmw.Tube.append(GMWTube(**tube))
         else:
-            gmw.tube.append(GMWTube(**d["Tube"]))
+            gmw.Tube.append(GMWTube(**d["Tube"]))
         if isinstance(d["History"], list):
             for history in d["History"]:
-                gmw.history.append(GMWHistory(**history))
+                gmw.History.append(GMWHistory(**history))
         else:
-            gmw.history.append(GMWHistory(**d["History"]))
+            gmw.History.append(GMWHistory(**d["History"]))
         return gmw
 
 
 class GLD(MatlabBaseModel):
-    source: list[GLDSource]
-    adm: list[GLDAdm]
-    dossier: list[GLDDossier]
-    history: list[GLDHistory]
+    Adm: list[GLDAdm]
+    Dossier: list[GLDDossier]
+    History: list[GLDHistory]
+    Source: list[GLDSource]
 
     @classmethod
     def from_dict(cls, d: dict):
         gld = cls(
             **{
-                "adm": [],  # GLDAdm(**d["Adm"]),
-                "source": [],  # GLDSource(**d["Source"]),
-                "dossier": [],
-                "history": [],
+                "Adm": [],  # GLDAdm(**d["Adm"]),
+                "Source": [],  # GLDSource(**d["Source"]),
+                "Dossier": [],
+                "History": [],
             }
         )
         if isinstance(d["Adm"], list):
-            for adm in d["adm"]:
-                gld.adm.append(GLDAdm(**adm))
+            for adm in d["Adm"]:
+                gld.Adm.append(GLDAdm(**adm))
         else:
-            gld.adm.append(GLDAdm(**d["Adm"]))
+            gld.Adm.append(GLDAdm(**d["Adm"]))
 
         if isinstance(d["Dossier"], list):
             for dossier in d["Dossier"]:
-                gld.dossier.append(GLDDossier(**dossier))
+                gld.Dossier.append(GLDDossier(**dossier))
         else:
-            gld.dossier.append(GLDDossier(**d["Dossier"]))
+            gld.Dossier.append(GLDDossier(**d["Dossier"]))
         if isinstance(d["History"], list):
             for history in d["History"]:
-                gld.history.append(GLDHistory(**history))
+                gld.History.append(GLDHistory(**history))
         else:
-            gld.history.append(GLDHistory(**d["History"]))
+            gld.History.append(GLDHistory(**d["History"]))
+        if not isinstance(d["Source"], list):
+            d["Source"] = [d["Source"]]
         if isinstance(d["Source"], list):
             for source in d["Source"]:
-                gld.source.append(GLDSource(**source))
+                if isinstance(source["Measurements"], list):
+                    measurements = [GLDMeasurement(**m) for m in source["Measurements"]]
+                else:
+                    measurements = [GLDMeasurement(**source["Measurements"])]
+                if isinstance(source["Changes"], list):
+                    changes = [COMChange.from_dict(c) for c in source["Changes"]]
+                elif not isinstance(source["Changes"], str):
+                    changes = [COMChange.from_dict(source["Changes"])]
+                else:
+                    changes = []
+                source["Measurements"] = []
+                source["Changes"] = []
+
+                gld.Source.append(GLDSource(**source))
+                for m in measurements:
+                    gld.Source[-1].Measurements.append(m)
+                for c in changes:
+                    gld.Source[-1].Changes.append(c)
         else:
-            gld.source.append(GLDSource(**d["Source"]))
+            gld.Source.append(GLDSource(**d["Source"]))
 
         return gld
 
 
 class GMN(MatlabBaseModel):
-    adm: GMNAdm
-    net: GMNNet
-    point: dict[int, GMNPoint] | None
-    history: list[GMNHistory] | None
+    Adm: GMNAdm
+    History: list[GMNHistory] | None
+    Net: GMNNet
+    Point: dict[int, GMNPoint] | None
 
     @classmethod
     def from_dict(cls, d: dict):
-        gmn = cls(**{"adm": GMNAdm(**d["Adm"]), "net": [], "history": None, "point": []})
+        gmn = cls(**{"Adm": GMNAdm(**d["Adm"]), "Net": [], "History": None, "Point": []})
         return gmn
 
 

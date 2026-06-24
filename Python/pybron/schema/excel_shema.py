@@ -49,12 +49,14 @@ datatype_map = {
     "[NITGCode]": "str",
     "[m]": "float",
     "[m+ref]": "float",
-    "[NaNBoolean]": "float",
+    "[NaNBoolean]": "bool | float",
     "[-m+topw]": "float",
     "[Table]": "Any",
     "[m3 s−2 kg−1]": "float",
     "[kgm-3]": "float",
-    "[Days]": "int",
+    "[Days]": "float",
+    "[%]": "float",
+    "[IDCategorical]": "int"
 }
 
 categorical_map = {
@@ -63,11 +65,9 @@ categorical_map = {
     # "WellStability": "str",
     "LoggerBrand": "str",
     "LoggerType": "str",
-    "QualityRegime": "str",
     "ObjRgstrDateTime": "float",
     "EventName": "Any",
     "RefLevel": "Any",
-    "Battery": "float",
 }
 
 
@@ -109,7 +109,7 @@ def _excel_schema_to_pydantic_str(
         for attr, datatype in attrs.iterrows():
             datatype_py = datatype["TargetDatatype"]
             datatype_name = datatype["TargetDatatype"]
-            if datatype_name == "[Categorical]":
+            if datatype_name == "[Categorical]": # or datatype_name == "[CategoricalID]":
                 if attr in categorical_map:
                     datatype_py = {
                         "type": categorical_map[attr],
@@ -122,16 +122,22 @@ def _excel_schema_to_pydantic_str(
                     if datatype.name == "BROID":
                         pass
                     if datatype.name in sam:
+                        namespace_enum = schema.namespace + sam[datatype.name] + "Enum"
+                        if namespace_enum[:-4] not in enums.keys():
+                            namespace_enum = "COM" + sam[datatype.name] + "Enum"
                         datatype_py = {
-                            "type": schema.namespace + sam[datatype.name] + "Enum",
+                            "type": namespace_enum,
                             "cardinality": [
                                 datatype["SourceMin"],
                                 datatype["SourceMax"],
                             ],
                         }
                     else:
+                        namespace_enum = schema.namespace + datatype.name + "Enum"
+                        if namespace_enum[:-4] not in enums.keys():
+                            namespace_enum = "COM" + datatype.name + "Enum"
                         datatype_py = {
-                            "type": schema.namespace + datatype.name + "Enum",
+                            "type": namespace_enum,
                             "cardinality": [
                                 datatype["SourceMin"],
                                 datatype["SourceMax"],
@@ -170,7 +176,7 @@ def read_excel_categories(category_filename: Optional[Path] = None) -> DataFrame
 
 def read_excel_waardelijsten() -> dict[str, list[str]]:
     ps = {}
-    for ns in ["GMW", "GMN", "GLD", "GAR"]:
+    for ns in ["GMW", "GMN", "GLD", "GAR", "COM"]:
         ps = {**ps, **read_excel_waardelijst(namespace=ns)}
     return ps
 
@@ -287,14 +293,19 @@ def generate_pydantic_schemas(
     ps = {}
     for df in df_schema:
         ps = {**ps, **_excel_schema_to_pydantic_str(df, enums)}
+    ps["GLDSource"]["Measurements"] = {"type": "list[GLDMeasurement]", "cardinality": ['Geen', 'Geen']}
+    ps["GLDSource"]["Changes"] = {"type": "list[GLDChange]", "cardinality": ['Geen', 'Geen']}
     enum_list_str = [key + "Enum" for key, v in enums.items() if len(v) > 0]
     enum_list_str.sort()
     import_enum_str = ",\n    ".join(enum_list_str)
+
     with (target_directory / "BRONTypes.py").open("wt") as fid:
         fid.write("# flake8: noqa\n")
+        fid.write("# This file is generated, do not change\n")
         fid.write("from typing import Any, Optional\n\n")
         fid.write("from pybron.schema.matlabbasemodel import MatlabBaseModel\n\n")
         fid.write(f"from .BRONEnums import (\n    {import_enum_str},\n)\n")
+        fid.write("from .BRONManualTypes import GLDMeasurement, GLDChange\n\n")
         for k, v in ps.items():
             fid.write(f"\n\nclass {k}(MatlabBaseModel):\n")
             for k2, v2 in v.items():
@@ -305,4 +316,6 @@ def generate_pydantic_schemas(
                 ):
                     fid.write(f"    {k2}: {v2['type']}\n")
                 else:
+                    if k2 == "Measurements":
+                        pass
                     fid.write(f"    {k2}: Optional[{v2['type']}]\n")

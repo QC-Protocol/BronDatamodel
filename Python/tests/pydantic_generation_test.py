@@ -30,12 +30,12 @@ def test_read_excel_schema():
 
 def test_read_excel_schema_GMN():
     df = read_excel_schema(namespace="GMN")
-    assert df["TargetEntity"][6] == "Net"
+    assert df["TargetEntity"][6] == "Adm"
 
 
 def test_read_excel_schema_GLD():
     df = read_excel_schema(namespace="GLD")
-    assert df["TargetEntity"][6] == "Adm"
+    assert df["TargetEntity"][5] == "Adm"
 
 
 def test_source_attribute_map_GMW():
@@ -69,7 +69,7 @@ def test_convert_excel_schema_GMW():
 
 def test_convert_excel_schema_GMN():
     df_schema = read_excel_schema(namespace="GMN")
-    df_cat = read_excel_waardelijst()
+    df_cat = read_excel_waardelijsten()
     enums = category_dict_to_pydantic_enum(df_cat)
     types = _excel_schema_to_pydantic_str(df_schema, enums)
     assert types["GMNNet"]["GroundwaterAspect"]["type"] == "GMNGroundwaterAspectEnum"
@@ -77,7 +77,7 @@ def test_convert_excel_schema_GMN():
 
 def test_convert_excel_schema_GLD():
     df_schema = read_excel_schema(namespace="GLD")
-    df_cat = read_excel_waardelijst()
+    df_cat = read_excel_waardelijsten()
     enums = category_dict_to_pydantic_enum(df_cat)
     types = _excel_schema_to_pydantic_str(df_schema, enums)
     assert types["GLDSource"]["Drift"]["type"] == "float"

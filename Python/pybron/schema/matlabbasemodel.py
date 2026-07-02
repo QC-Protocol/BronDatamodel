@@ -63,17 +63,17 @@ class MatlabBaseModel(BaseModel):
             elif isinstance(v, Enum):
                 matlab_dict[k] = v.value
             elif isinstance(v, list) and use_structarray:
-                matlab_dict[k.capitalize()] = list_to_structarray(v)
+                matlab_dict[k] = list_to_structarray(v)
             elif isinstance(v, list):
                 try:
-                    matlab_dict[k.capitalize()] = [
+                    matlab_dict[k] = [
                         li.as_matlab_dict() if isinstance(li, MatlabBaseModel) else li
                         for li in v
                     ]
                 except AttributeError:
                     pass
             elif isinstance(v, MatlabBaseModel):
-                matlab_dict[k.capitalize()] = v.as_matlab_dict()
+                matlab_dict[k] = v.as_matlab_dict()
             else:
                 matlab_dict[k] = v
         if only_children or not use_structarray:

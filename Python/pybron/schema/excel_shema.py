@@ -59,7 +59,7 @@ datatype_map = {
     "[kgm-3]": "float",
     "[Days]": "float",
     "[%]": "float",
-    "[IDCategorical]": "COMQualityRegimeEnum"
+    "[IDCategorical]": "COMQualityRegimeEnum",
 }
 
 categorical_map = {
@@ -115,7 +115,9 @@ def _excel_schema_to_pydantic_str(
                 pass
             datatype_py = datatype["TargetDatatype"]
             datatype_name = datatype["TargetDatatype"]
-            if datatype_name == "[Categorical]": # or datatype_name == "[CategoricalID]":
+            if (
+                datatype_name == "[Categorical]"
+            ):  # or datatype_name == "[CategoricalID]":
                 if attr in categorical_map:
                     datatype_py = {
                         "type": categorical_map[attr],
@@ -171,16 +173,16 @@ def read_excel_waardelijsten() -> dict[str, list[str]]:
     ps = {}
     for ns in ["GMW", "GMN", "GLD", "GAR", "COM"]:
         ps = {**ps, **read_excel_waardelijst(namespace=ns)}
-    
+
     for ns in ["GMW", "GMN", "GLD"]:
         d = read_excel_gebeurtenis(namespace=ns)
         ps[ns + "EventName"] = d[ns + "EventName"]
 
     return ps
 
+
 def read_excel_gebeurtenis(
-        event_filename: Optional[Path] = None,
-        namespace: str = "GMW"
+    event_filename: Optional[Path] = None, namespace: str = "GMW"
 ) -> dict[str, list[str]]:
     if not event_filename:
         event_filename = (
@@ -291,9 +293,7 @@ def generate_pydantic_enums(enums: dict[str, Enum], target_file: Path):
             if k in idcategorical:
                 fid.write(f"\n\nclass {k}Enum(int, Enum):\n")
                 for ii, field in enumerate(v):
-                    fid.write(
-                        f'    {field.value.translate(key_translation)} = {ii}\n'
-                    )
+                    fid.write(f"    {field.value.translate(key_translation)} = {ii}\n")
 
             else:
                 fid.write(f"\n\nclass {k}Enum(str, Enum):\n")
@@ -322,8 +322,14 @@ def generate_pydantic_schemas(
     ps = {}
     for df in df_schema:
         ps = {**ps, **_excel_schema_to_pydantic_str(df, enums)}
-    ps["GLDSource"]["Measurements"] = {"type": "list[GLDMeasurement]", "cardinality": ['Geen', 'Geen']}
-    ps["GLDSource"]["Changes"] = {"type": "list[COMChange]", "cardinality": ['Geen', 'Geen']}
+    ps["GLDSource"]["Measurements"] = {
+        "type": "list[GLDMeasurement]",
+        "cardinality": ["Geen", "Geen"],
+    }
+    ps["GLDSource"]["Changes"] = {
+        "type": "list[COMChange]",
+        "cardinality": ["Geen", "Geen"],
+    }
     enum_list_str = [key + "Enum" for key, v in enums.items() if len(v) > 0]
     enum_list_str.sort()
     import_enum_str = ",\n    ".join(enum_list_str)

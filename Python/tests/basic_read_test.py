@@ -140,8 +140,9 @@ def adm_data() -> dict[str, Any]:
         "ObjRgstrDateTime": 123.4,
         "LastRgstrEvent": 12,
         "WellCode": "sdaf",
-        "GMWID": 0
+        "GMWID": 0,
     }
+
 
 @pytest.fixture
 def tube_data() -> dict[str, Any]:
@@ -149,7 +150,7 @@ def tube_data() -> dict[str, Any]:
         "GMWID": 0,
         "TubeNo": 1,
         "Type": "",
-        "ArtesianWellCapPresent": float('nan'),
+        "ArtesianWellCapPresent": float("nan"),
         "TubeDiameter": 1,
         "IsVarTubeDiam": False,
         "Status": "",
@@ -159,11 +160,11 @@ def tube_data() -> dict[str, Any]:
         "Glue": "",
         "Material": "",
         "SockMaterial": "",
-        "FilterTopLevel":  1,
+        "FilterTopLevel": 1,
         "FilterBottomLevel": 2,
         "sedSumpLength": 2,
         "LoggerBrand": "",
-        "LoggerDepth": float('nan'),
+        "LoggerDepth": float("nan"),
         "LoggerSerial": "",
         "LoggerType": "",
         "GLDID": 1,
@@ -186,5 +187,5 @@ def test_nan(tube_data):
     tube = GMWTube(**tube_data)
     assert isnan(tube.LoggerDepth)
     assert isnan(tube.ArtesianWellCapPresent)
-    tube.ArtesianWellCapPresent = float('nan')
+    tube.ArtesianWellCapPresent = float("nan")
     assert isnan(tube.ArtesianWellCapPresent)

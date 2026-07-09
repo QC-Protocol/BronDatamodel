@@ -59,7 +59,6 @@ from .BRONEnums import (
 from .BRONManualTypes import GLDMeasurement, COMChange
 
 
-
 class GMWAdm(MatlabBaseModel):
     GMWID: Optional[int]
     BROID: Optional[str]
@@ -136,7 +135,7 @@ class GLDAdm(MatlabBaseModel):
 
 
 class GLDDossier(MatlabBaseModel):
-    GMWID : Optional[int]
+    GMWID: Optional[int]
     GMWBROID: Optional[str]
     TubeNo: Optional[int]
 

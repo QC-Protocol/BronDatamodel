@@ -14,9 +14,9 @@ class COMChange(MatlabBaseModel):
 
     @staticmethod
     def from_dict(data: dict):
-        if len(data['values']) > 0:
-            if isinstance(data['values'][0], float):
-                data['values'] = [data['values']]
+        if len(data["values"]) > 0:
+            if isinstance(data["values"][0], float):
+                data["values"] = [data["values"]]
         try:
             change = COMChange(**data)
         except ValidationError:

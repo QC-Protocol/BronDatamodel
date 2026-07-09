@@ -124,7 +124,9 @@ class GMN(MatlabBaseModel):
 
     @classmethod
     def from_dict(cls, d: dict):
-        gmn = cls(**{"Adm": GMNAdm(**d["Adm"]), "Net": [], "History": None, "Point": []})
+        gmn = cls(
+            **{"Adm": GMNAdm(**d["Adm"]), "Net": [], "History": None, "Point": []}
+        )
         return gmn
 
 

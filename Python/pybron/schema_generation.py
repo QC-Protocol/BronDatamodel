@@ -30,3 +30,7 @@ def generate_schemas(target_directory: Optional[Path] = None):
     df_cat = read_excel_waardelijsten()
     enums = category_dict_to_pydantic_enum(df_cat)
     generate_pydantic_schemas(df_schema, enums, target_directory)
+
+
+if __name__ == "__main__":
+    generate_schemas()

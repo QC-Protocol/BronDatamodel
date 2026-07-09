@@ -85,7 +85,7 @@ class GMWTube(MatlabBaseModel):
     SockMaterial: Optional[GMWSockMaterialEnum]
     FilterTopLevel: Optional[float]
     FilterBottomLevel: Optional[float]
-    sedSumpLength: Optional[float]
+    SedSumpLength: Optional[float]
     LoggerBrand: Optional[str]
     LoggerDepth: Optional[float]
     LoggerSerial: Optional[str]
@@ -153,7 +153,7 @@ class GLDSource(MatlabBaseModel):
     RefLevel: Optional[Any]
     Unit: Optional[str]
     WaterDensity: Optional[float]
-    Gravity: Optional[float]
+    Gravity: Optional[str]
     Battery: Optional[float]
     BaroID: Optional[int]
     Measurements: Optional[list[GLDMeasurement]]
@@ -186,6 +186,7 @@ class GMNPoint(MatlabBaseModel):
     MeasuringPointCode: Optional[str]
     GMWBROID: Optional[str]
     TubeNo: Optional[int]
+    ProviderID: Optional[int]
 
 
 class GMNHistory(MatlabBaseModel):

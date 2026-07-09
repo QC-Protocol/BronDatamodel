@@ -343,7 +343,7 @@ class GMNGroundwaterAspectEnum(str, Enum):
 
 
 class GMNEventNameEnum(str, Enum):
-    [Categorical] = "[Categorical]"
+    # [Categorical] = "[Categorical]"
     Start_registratie = "Start registratie"
     Meetpunt_toegevoegd = "Meetpunt toegevoegd"
     Meetpunt_beëindigd = "Meetpunt beëindigd"
@@ -1160,7 +1160,7 @@ class COMQualityRegimeEnum(int, Enum):
 
 
 class GLDEventNameEnum(str, Enum):
-    [Categorical] = "[Categorical]"
+    # [Categorical] = "[Categorical]"
     Start_registratie = "Start registratie"
     Meetreeks = "Meetreeks"
     Controlereeks = "Controlereeks"

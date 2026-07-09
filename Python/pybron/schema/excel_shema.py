@@ -213,7 +213,7 @@ def read_excel_waardelijst(
             / ".."
             / ".."
             / ".."
-            / "BroCategoricals"
+            / "BROCategoricals"
             / f"Waardelijsten BRO {namespace}.xlsx"
         )
 
